@@ -25,6 +25,11 @@ function App() {
           )}
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
+        {isAuthenticated ? (
+          <AppRoutes />
+        ) : (
+          <Route path="/*" element={<Login />} />
+        )}
       </Router>
     </>
   );
