@@ -17,14 +17,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          {/* Protected Routes */}
-          {isAuthenticated ? (
-            <Route path="/*" element={<AppRoutes />} />
-          ) : (
-            <Route path="/*" element={<Login />} />
-          )}
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
+        {/* Protected Routes */}
         {isAuthenticated ? (
           <AppRoutes />
         ) : (
