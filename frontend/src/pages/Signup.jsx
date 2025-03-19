@@ -44,7 +44,7 @@ function Signup() {
       await axios.post(`${API_URL}/users/register`, formData);
       toast.success("Signup successful!");
       dispatch(loginSuccess({ token, user }));
-      setTimeout(() => navigate('/'), 1500);
+      setTimeout(() => navigate('/dashboard'), 1500);
     } catch (error) {
       console.log(error.response);
       toast.error(error.response?.data?.message || error.response?.data?.error || "Signup failed server error");

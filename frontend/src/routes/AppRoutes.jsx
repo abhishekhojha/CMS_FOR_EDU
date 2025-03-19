@@ -32,7 +32,7 @@ function AppRoutes() {
             {isAuthenticated && <TopBar />}
             <div className={`pt-16 p-6`}>
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/dashboard" element={<Home />} />
                 <Route path="/pages" element={<PagesList />} />
                 <Route path="/create-pages" element={<CreatePage />} />
 
