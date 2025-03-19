@@ -1,0 +1,21 @@
+{
+  "types": [
+    { "name": "paragraph", "tag": "p" },
+    { "name": "heading1", "tag": "h1" },
+    { "name": "heading2", "tag": "h2" },
+    { "name": "heading3", "tag": "h3" },
+    { "name": "list", "tag": "ul" },
+    { "name": "orderedList", "tag": "ol" },
+    { "name": "listItem", "tag": "li" },
+    { "name": "quote", "tag": "blockquote" },
+    { "name": "code", "tag": "code" },
+    { "name": "preformatted", "tag": "pre" },
+    { "name": "image", "tag": "img", "hasUrl": true, "hasAltText": true },
+    { "name": "video", "tag": "video", "hasUrl": true, "hasAltText": true },
+    { "name": "table", "tag": "table" },
+    { "name": "tableRow", "tag": "tr" },
+    { "name": "tableCell", "tag": "td" },
+    { "name": "link", "tag": "a", "hasUrl": true },
+    { "name": "button", "tag": "button" }
+  ]
+}
