@@ -9,27 +9,7 @@ import { useSelector } from "react-redux";
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  return (
-    <>
-      <Router>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-
-          {/* <Route path="*" element={<NotFound />} /> */}
-        </Routes>
-        {/* Protected Routes */}
-        {isAuthenticated ? (
-          <AppRoutes />
-        ) : (
-          <Routes>
-            <Route path="/*" element={<Login />} />
-          </Routes>
-        )}
-      </Router>
-    </>
-  );
+  return <AppRoutes />;
 }
 
 export default App;

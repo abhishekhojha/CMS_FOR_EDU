@@ -2,17 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { getPages, deletePage } from '@/services/pageService';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui';
+import { toast } from "react-toastify";
+import Loader from '@/components/ui/Loader';
 
 function PagesList() {
   const [pages, setPages] = useState([]);
-
+  const [loading, setLoading] = useState(true)
+  console.log(pages);
   useEffect(() => {
     const fetchPages = async () => {
       try {
         const response = await getPages();
+        // setLoading(false)
         setPages(response.data);
       } catch (err) {
-        console.error('Error fetching pages:', err);
+        // setLoading(false)
+        toast.error('Error fetching pages:', err);
       }
     };
     fetchPages();
@@ -24,7 +29,9 @@ function PagesList() {
       setPages((prev) => prev.filter((page) => page._id !== id));
     }
   };
-
+  if (loading) {
+    return <Loader />
+  }
   return (
     <div className='mt-4'>
       <h1 className="text-2xl font-bold mb-4">All Pages</h1>
@@ -60,7 +67,7 @@ function PagesList() {
                     <Link to={`/pages/edit/${page._id}`}>
                       <Button className="">Edit</Button>
                     </Link>
-                    <Button onClick={() => handleDelete(page._id)} className="bg-red-500">Delete</Button>
+                    {/* <Button onClick={() => handleDelete(page._id)} className="bg-red-500">Delete</Button> */}
                   </td>
                 </tr>
               ))}
