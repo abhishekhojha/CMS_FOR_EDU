@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Label, Input } from "@/components/ui";
-import { getSections} from "@/services/SectionService"
+import { getSections } from "@/services/SectionService";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +32,7 @@ const SectionsManagement = () => {
       //   const response = await axios.get(`/sections/${id}`);
       console.log(response);
 
-      //   setSections(response.data);
+      setSections(response.data);
     } catch (error) {
       console.error("Error fetching sections:", error);
     }
@@ -116,7 +116,7 @@ const SectionsManagement = () => {
                 <td className="p-3 border">{section.order}</td>
                 <td className="p-3 border">
                   <button onClick={() => handleDeleteSection(section._id)}>
-                    Delete
+                    View
                   </button>
                 </td>
               </tr>
