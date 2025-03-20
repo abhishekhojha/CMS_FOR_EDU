@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Label, Input } from "@/components/ui";
 import { getSections } from "@/services/SectionService";
+import Loader from "@/components/ui/Loader";
 import {
   Dialog,
   DialogContent,
@@ -18,22 +19,21 @@ const SectionsManagement = () => {
   const [sections, setSections] = useState([]);
   const [newSections, setNewSections] = useState([]);
   const [addSection, setAddSection] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetchSections();
   }, []);
-  console.log("sections:" + sections);
 
   const fetchSections = async () => {
-    console.log("in");
+    setLoading(true);
 
     try {
       const response = await getSections(id);
       //   const response = await axios.get(`/sections/${id}`);
-      console.log(response);
-
+      setLoading(false);
       setSections(response.data);
     } catch (error) {
+      setLoading(false);
       console.error("Error fetching sections:", error);
     }
   };
@@ -66,7 +66,9 @@ const SectionsManagement = () => {
       console.error("Error deleting section:", error);
     }
   };
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="mt-4">
       <h2 className="text-2xl font-bold mb-4">Sections Management</h2>
