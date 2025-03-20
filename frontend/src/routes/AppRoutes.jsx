@@ -11,6 +11,7 @@ import CreatePage from "@/pages/CreatePage";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import Welcome from "@/pages/Welcome";
+import SectionManagement from "@/pages/PageSections";
 
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -35,7 +36,7 @@ function AppRoutes() {
                 <Route path="/dashboard" element={<Home />} />
                 <Route path="/pages" element={<PagesList />} />
                 <Route path="/create-pages" element={<CreatePage />} />
-
+                <Route path="/edit-pages/:id" element={<SectionManagement />} />
                 {/* <Route path="/about" element={<About />} /> */}
                 {/* <Route path="/contact" element={<Contact />} /> */}
               </Routes>

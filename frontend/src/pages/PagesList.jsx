@@ -13,10 +13,10 @@ function PagesList() {
     const fetchPages = async () => {
       try {
         const response = await getPages();
-        // setLoading(false)
+        setLoading(false)
         setPages(response.data);
       } catch (err) {
-        // setLoading(false)
+        setLoading(false)
         toast.error('Error fetching pages:', err);
       }
     };
@@ -64,7 +64,7 @@ function PagesList() {
                     <Link to={`/pages/${page._id}`}>
                       <Button className="">View</Button>
                     </Link>
-                    <Link to={`/pages/edit/${page._id}`}>
+                    <Link to={`/edit-pages/${page._id}`}>
                       <Button className="">Edit</Button>
                     </Link>
                     {/* <Button onClick={() => handleDelete(page._id)} className="bg-red-500">Delete</Button> */}
