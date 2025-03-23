@@ -18,11 +18,6 @@ export const getSectionById = async (id) => {
 };
 
 // Update Section
-export const updateSection = async (id, data) => {
-  return await axios.put(`${API_URL_PATH}/${id}`, data);
-};
-
-// Delete Section
-export const deleteSection = async (id) => {
-  return await axios.delete(`${API_URL_PATH}/${id}`);
+export const updateSection = async (data) => {
+  return await axios.post(`${API_URL_PATH}//merge-update`, data);
 };

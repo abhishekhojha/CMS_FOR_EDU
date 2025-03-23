@@ -31,7 +31,7 @@ function AppRoutes() {
           {isAuthenticated && <Sidebar />}
           <div className="w-full lg:flex-1">
             {isAuthenticated && <TopBar />}
-            <div className={`pt-16 p-6`}>
+            <div className={`pt-16 p-6 lg:max-h-screen lg:overflow-y-auto`}>
               <Routes>
                 <Route path="/dashboard" element={<Home />} />
                 <Route path="/pages" element={<PagesList />} />
