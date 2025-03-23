@@ -85,7 +85,6 @@ router.delete("/", async (req, res) => {
 });
 async function mergeAndUpdateSection(sectionId, updatedElements) {
   try {
-    // Fetch the section from the database
     const section = await Section.findById(sectionId);
     if (!section) {
       throw new Error("Section not found");
@@ -93,25 +92,29 @@ async function mergeAndUpdateSection(sectionId, updatedElements) {
 
     // Convert elements to a map for easy lookup
     const dbElementMap = new Map(
-      section.elements.map((el) => [el._id.toString(), el.toObject()])
+      section.elements.map((el) => [el._id.toString(), el])
     );
+
+    // Ensure updatedElements is an array
+    if (!Array.isArray(updatedElements)) {
+      throw new Error("updatedElements must be an array");
+    }
 
     // Merge updated elements with missing fields from DB
     const mergedElements = updatedElements.map((element) => {
-      const dbElement = dbElementMap.get(element._id);
+      const dbElement = dbElementMap.get(element._id?.toString());
 
       if (dbElement) {
-        // Merge - keep updated data, add missing fields from DB
-        return { ...dbElement, ...element };
+        // Merge - updated data will overwrite existing fields
+        return { ...dbElement.toObject(), ...element };
       }
 
       // If element not found in DB, use updated data directly
       return element;
-    });
+    });   
 
     // Update section with merged elements
-    return res.status(400).json({ errors: mergedElements });
-    
+
     section.elements = mergedElements;
     await section.save();
 
@@ -135,10 +138,11 @@ router.put(
 
     try {
       const { sectionId, elements } = req.body;
+      await mergeAndUpdateSection(sectionId, elements);
 
-      for (const updatedElement of elements) {
-        await mergeAndUpdateSection(sectionId, updatedElement);
-      }
+      // for (const updatedElement of elements) {
+      //   await mergeAndUpdateSection(sectionId, updatedElement);
+      // }
 
       res
         .status(200)

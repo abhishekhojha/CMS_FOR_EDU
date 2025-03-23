@@ -19,5 +19,5 @@ export const getSectionById = async (id) => {
 
 // Update Section
 export const updateSection = async (data) => {
-  return await axios.post(`${API_URL_PATH}//merge-update`, data);
+  return await axios.put(`${API_URL_PATH}/merge-update`, data);
 };

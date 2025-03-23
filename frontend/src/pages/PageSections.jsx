@@ -68,9 +68,13 @@ const SectionsManagement = () => {
 
     try {
       let elements = data.sections;
-      console.log(elements);
-      return
-      const response = await updateSection(sectionId, elements);
+      let sectionData = {
+        sectionId: sectionId,
+        elements: elements,
+      }
+      // console.log(elements);
+      // return
+      const response = await updateSection(sectionData);
       if (response.status === 200) {
         alert("Section saved successfully!");
         fetchSections(); // Refresh the sections
