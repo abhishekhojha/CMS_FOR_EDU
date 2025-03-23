@@ -110,6 +110,8 @@ async function mergeAndUpdateSection(sectionId, updatedElements) {
     });
 
     // Update section with merged elements
+    return res.status(400).json({ errors: mergedElements });
+    
     section.elements = mergedElements;
     await section.save();
 
