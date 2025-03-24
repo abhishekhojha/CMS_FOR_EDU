@@ -17,34 +17,39 @@ function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
-    <Router>
-      <Routes>
-      <Route path="/" element={<Welcome />} />
-
-        {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        {/* <Route path="*" element={<NotFound />} /> */}
-      </Routes>
-      <ProtectedRoute>
-        <div className="flex">
-          {isAuthenticated && <Sidebar />}
-          <div className="w-full lg:flex-1">
-            {isAuthenticated && <TopBar />}
-            <div className={`pt-16 p-6 lg:max-h-screen lg:overflow-y-auto`}>
-              <Routes>
-                <Route path="/dashboard" element={<Home />} />
-                <Route path="/pages" element={<PagesList />} />
-                <Route path="/create-pages" element={<CreatePage />} />
-                <Route path="/edit-pages/:id" element={<SectionManagement />} />
-                {/* <Route path="/about" element={<About />} /> */}
-                {/* <Route path="/contact" element={<Contact />} /> */}
-              </Routes>
+    <>
+      <Router>
+        <ProtectedRoute>
+          <div className="flex">
+            {isAuthenticated && <Sidebar />}
+            <div className="w-full lg:flex-1">
+              {isAuthenticated && <TopBar />}
+              <div className={`pt-16 p-6 lg:max-h-screen lg:overflow-y-auto`}>
+                <Routes>
+                  <Route path="/dashboard" element={<Home />} />
+                  <Route path="/pages" element={<PagesList />} />
+                  <Route path="/create-pages" element={<CreatePage />} />
+                  <Route
+                    path="/edit-pages/:id"
+                    element={<SectionManagement />}
+                  />
+                  {/* <Route path="/about" element={<About />} /> */}
+                  {/* <Route path="/contact" element={<Contact />} /> */}
+                </Routes>
+              </div>
             </div>
           </div>
-        </div>
-      </ProtectedRoute>
-    </Router>
+        </ProtectedRoute>
+        <Routes>
+          {/* <Route exact path="/" element={<Welcome />} /> */}
+
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          {/* <Route path="*" element={<NotFound />} /> */}
+        </Routes>
+      </Router>
+    </>
   );
 }
 
