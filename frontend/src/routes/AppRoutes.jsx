@@ -30,7 +30,7 @@ function AppRoutes() {
                   <Route path="/pages" element={<PagesList />} />
                   <Route path="/create-pages" element={<CreatePage />} />
                   <Route
-                    path="/edit-pages/:id"
+                    path="/edit-pages/:id/:name"
                     element={<SectionManagement />}
                   />
                   {/* <Route path="/about" element={<About />} /> */}

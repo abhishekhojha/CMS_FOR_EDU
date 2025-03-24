@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { useParams } from "react-router-dom";
 const SectionsManagement = () => {
-  const { id } = useParams();
+  const { id, name } = useParams();
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -60,7 +60,7 @@ const SectionsManagement = () => {
             data.sections[index] = {};
           }
           console.log(field);
-          
+
           data.sections[index][field] = value;
         }
       }
@@ -71,7 +71,7 @@ const SectionsManagement = () => {
       let sectionData = {
         sectionId: sectionId,
         elements: elements,
-      }
+      };
       // console.log(elements);
       // return
       const response = await updateSection(sectionData);
@@ -93,7 +93,7 @@ const SectionsManagement = () => {
   }
   return (
     <div className="mt-4">
-      <h2 className="text-2xl font-bold mb-4">Sections Management</h2>
+      <h2 className="text-2xl font-bold mb-4">{name} Sections Management</h2>
 
       {/* <Button onClick={handleAddSection}>Add Section</Button>
       <Button onClick={handleSaveSections} className="ml-2">
