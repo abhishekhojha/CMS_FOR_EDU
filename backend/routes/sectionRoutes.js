@@ -101,25 +101,38 @@ async function mergeAndUpdateSection(sectionId, updatedElements) {
     }
 
     // Merge updated elements with missing fields from DB
-    const mergedElements = updatedElements.map((element) => {
-      const dbElement = dbElementMap.get(element._id?.toString());
+    for (const element of updatedElements) {
+      const elementId = element._id;
+      if (!elementId) continue; // Skip if no _id
+
+      const dbElement = dbElementMap.get(elementId.toString());
 
       if (dbElement) {
-        // Merge - updated data will overwrite existing fields
-        return { ...dbElement.toObject(), ...element };
+        const updateFields = {};
+
+        for (const [key, value] of Object.entries(element)) {
+          if (key === "_id") continue; // Skip _id
+
+          // Handle dynamic items[index] update
+          const match = key.match(/^items\[(\d+)\]$/);
+          if (match) {
+            const index = parseInt(match[1], 10);
+            updateFields[`elements.$.items.${index}`] = value;
+          } else {
+            // Regular field update (e.g., content, url, altText)
+            updateFields[`elements.$.${key}`] = value;
+          }
+        }
+        if (Object.keys(updateFields).length > 0) {
+          await Section.updateOne(
+            { _id: sectionId, "elements._id": elementId },
+            { $set: updateFields }
+          );
+        }
       }
-
-      // If element not found in DB, use updated data directly
-      return element;
-    });   
-
-    // Update section with merged elements
-
-    section.elements = mergedElements;
-    await section.save();
-
-    console.log("Section updated successfully:", section);
-    return section;
+    }
+    console.log("Section updated successfully");
+    return await Section.findById(sectionId);
   } catch (error) {
     console.error("Error updating section:", error);
     throw error;

@@ -6,9 +6,10 @@ const mongoose = require("mongoose");
 const pageRoutes = require("./routes/pageRoutes");
 const sectionRoutes = require("./routes/sectionRoutes");
 const userRoutes = require("./routes/userRoutes");
-
+const cloudinaryRoutes = require("./routes/cloudinaryRoutes")
 const app = express();
 const PORT = process.env.PORT || 5000;
+const courseRoutes = require('./routes/courseRoutes');
 
 // ✅ Middleware
 app.use(express.json()); // Parse JSON request body
@@ -24,6 +25,8 @@ mongoose
 app.use("/api/pages", pageRoutes);
 app.use("/api/sections", sectionRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/cloudinary", cloudinaryRoutes);
+app.use('/api/courses', courseRoutes);
 
 // ✅ Default Route
 app.get("/", (req, res) => {

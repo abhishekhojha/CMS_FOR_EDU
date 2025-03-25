@@ -8,7 +8,6 @@ import Loader from '@/components/ui/Loader';
 function PagesList() {
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(true)
-  console.log(pages);
   useEffect(() => {
     const fetchPages = async () => {
       try {

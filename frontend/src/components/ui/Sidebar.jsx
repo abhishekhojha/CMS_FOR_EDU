@@ -16,6 +16,7 @@ function Sidebar() {
   const menuItems = [
     { path: '/', icon: <Home size={20} />, label: 'Home' },
     { path: '/pages', icon: <Info size={20} />, label: 'Pages' },
+    { path: '/courses', icon: <Info size={20} />, label: 'Courses' },
     // { path: '/contact', icon: <Mail size={20} />, label: 'Users' },
   ];
 

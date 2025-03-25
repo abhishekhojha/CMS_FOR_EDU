@@ -12,6 +12,9 @@ import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import Welcome from "@/pages/Welcome";
 import SectionManagement from "@/pages/PageSections";
+import Courses from "@/pages/Courses";
+import CreateCourseForm from "@/pages/CreateCourseForm";
+import CourseList from "@/pages/Courses";
 
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -28,7 +31,10 @@ function AppRoutes() {
                 <Routes>
                   <Route path="/dashboard" element={<Home />} />
                   <Route path="/pages" element={<PagesList />} />
+                  <Route path="/courses" element={<CourseList />} />
                   <Route path="/create-pages" element={<CreatePage />} />
+                  <Route path="/create-courses" element={<CreateCourseForm /> } />
+                  
                   <Route
                     path="/edit-pages/:id/:name"
                     element={<SectionManagement />}
