@@ -11,10 +11,10 @@ const {
 
 const router = express.Router();
 
-router.post("/", upload.single("image"), createCourse);
+router.post("/", createCourse);
 router.get("/", getCourses);
 router.get("/:id", getCourse);
-router.put("/:id", upload.single("image"), updateCourse);
+router.put("/:id", updateCourse);
 router.delete("/:id", deleteCourse);
 
 module.exports = router;

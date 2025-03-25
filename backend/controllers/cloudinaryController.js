@@ -1,7 +1,5 @@
 const { uploadImage, deleteImage } = require("../utils/cloudinary");
 const Image = require("../models/Image");
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
 
 // Upload Image
 exports.uploadImageController = async (req, res) => {
