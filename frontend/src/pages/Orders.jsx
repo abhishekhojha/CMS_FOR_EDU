@@ -7,13 +7,18 @@ const OrdersList = () => {
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const fetchOrders = async () => {
+    setLoading(true);
     try {
       const response = await getOrders(`?page=${page}&limit=10`);
       setOrders(response.data.orders);
       setTotalPages(response.data.totalPages);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
+
       console.error("Error fetching orders:", error);
     }
   };
@@ -21,7 +26,9 @@ const OrdersList = () => {
   useEffect(() => {
     fetchOrders();
   }, [page]);
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Orders</h1>

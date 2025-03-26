@@ -4,11 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { getCourses } from "@/services/courseService"
+import { getCourses } from "@/services/courseService";
 
 const CourseList = ({ onEdit }) => {
   const [courses, setCourses] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetchCourses();
   }, []);
@@ -17,7 +17,9 @@ const CourseList = ({ onEdit }) => {
     try {
       const response = await getCourses();
       setCourses(response.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast.error(error.response?.data?.error || "Error fetching courses");
     }
   };
@@ -31,7 +33,9 @@ const CourseList = ({ onEdit }) => {
       toast.error(error.response?.data?.error || "Error deleting course");
     }
   };
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4">Courses</h2>
