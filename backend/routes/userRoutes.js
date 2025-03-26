@@ -3,6 +3,7 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -83,7 +84,7 @@ router.post(
 );
 
 // ✅ Get user profile (Protected)
-router.get("/profile", async (req, res) => {
+router.get("/profile",protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) return res.status(404).json({ error: "User not found" });

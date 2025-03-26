@@ -5,6 +5,8 @@ const {
   verifyPayment,
   getAllOrders,
 } = require("../controllers/orderController");
+const hasRole = require("../middleware/Auth");
+
 const protect = require("../middleware/authMiddleware");
 
 // Route to create order
@@ -12,6 +14,6 @@ router.post("/create-order", protect, createOrder);
 
 // Route to verify payment
 router.post("/verify-order", protect, verifyPayment);
-router.get("/", getAllOrders);
+router.get("/", hasRole, getAllOrders);
 
 module.exports = router;

@@ -4,10 +4,12 @@ const Section = require("../models/SectionSchema");
 const Page = require("../models/Page");
 const sectionTypes = require("../configs/sectionTypes.json").types;
 const router = express.Router();
+const hasRole = require("../middleware/Auth");
 
 // ✅ Create or Update multiple sections for a page
 router.post(
   "/",
+  hasRole,
   [
     body("pageId").notEmpty().withMessage("Page ID is required"),
     body("sections").isArray().withMessage("Sections must be an array"),
@@ -64,7 +66,7 @@ router.get("/:pageId", async (req, res) => {
 });
 
 // ✅ Delete multiple sections by ID
-router.delete("/", async (req, res) => {
+router.delete("/", hasRole, async (req, res) => {
   try {
     const { sectionIds } = req.body;
     if (!Array.isArray(sectionIds) || sectionIds.length === 0) {
@@ -140,6 +142,7 @@ async function mergeAndUpdateSection(sectionId, updatedElements) {
 }
 router.put(
   "/merge-update",
+  hasRole,
   [
     body("sectionId").notEmpty().withMessage("Section ID is required"),
     body("elements").isArray().withMessage("Elements must be an array"),
