@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getCourses } from "@/services/courseService";
+import Loader from '@/components/ui/Loader';
 
 const CourseList = ({ onEdit }) => {
   const [courses, setCourses] = useState([]);

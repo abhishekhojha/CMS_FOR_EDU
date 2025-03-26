@@ -3,6 +3,8 @@ import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getOrders } from "@/services/orderService";
+import Loader from '@/components/ui/Loader';
+
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
