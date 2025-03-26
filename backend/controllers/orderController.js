@@ -100,7 +100,41 @@ const verifyPayment = async (req, res) => {
   }
 };
 
+const getAllOrders = async (req, res) => {
+  try {
+    let { page, limit } = req.query;
+
+    // Set default values if not provided
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    // Fetch orders with pagination and populate user and course details
+    const orders = await Order.find()
+      .populate("user", "name email")
+      .populate("course", "title price")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalOrders = await Order.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      totalOrders,
+      currentPage: page,
+      totalPages: Math.ceil(totalOrders / limit),
+      orders,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 module.exports = {
   createOrder,
   verifyPayment,
+  getAllOrders,
 };
