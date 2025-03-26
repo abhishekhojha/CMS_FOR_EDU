@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { getCourses } from "@/services/courseService"
 
 const CourseList = ({ onEdit }) => {
   const [courses, setCourses] = useState([]);
@@ -14,7 +15,7 @@ const CourseList = ({ onEdit }) => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/courses");
+      const response = await getCourses();
       setCourses(response.data);
     } catch (error) {
       toast.error(error.response?.data?.error || "Error fetching courses");
