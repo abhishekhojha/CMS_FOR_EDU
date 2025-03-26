@@ -93,3 +93,7 @@
   right: 15%;
   animation-delay: 0.3s;
 }
+
+.ordersDiv p{
+  font-size: 14px;
+}
