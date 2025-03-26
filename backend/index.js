@@ -14,7 +14,7 @@ const paymentRoutes = require("./routes/orderRoute");
 // ✅ Middleware
 app.use(express.json()); // Parse JSON request body
 app.use(cors()); // Enable CORS for frontend access
-
+process.env.TZ = "Asia/Calcutta";
 // ✅ MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI)
