@@ -11,7 +11,8 @@ const razorpayInstance = new Razorpay({
 // Create Order
 const createOrder = async (req, res) => {
   try {
-    const { userId, courseId } = req.body;
+    const { courseId } = req.body;
+    const userId = req.user.id;
 
     // Fetch the course details to calculate the amount
     const course = await Course.findById(courseId);
