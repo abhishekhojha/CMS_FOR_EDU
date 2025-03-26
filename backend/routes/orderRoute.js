@@ -13,7 +13,7 @@ const protect = require("../middleware/authMiddleware");
 router.post("/create-order", protect, createOrder);
 
 // Route to verify payment
-router.post("/verify-order", protect, verifyPayment);
+router.post("/verify-payment", protect, verifyPayment);
 router.get("/", hasRole, getAllOrders);
 
 module.exports = router;
