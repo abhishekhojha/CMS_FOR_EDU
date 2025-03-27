@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getCourses } from "@/services/courseService";
-import Loader from '@/components/ui/Loader';
+import Loader from "@/components/ui/Loader";
 
 const CourseList = ({ onEdit }) => {
   const [courses, setCourses] = useState([]);
@@ -64,8 +64,8 @@ const CourseList = ({ onEdit }) => {
                 </p>
                 <p className="text-blue-600 font-bold mt-2">₹{course.price}</p>
                 <div className="flex gap-4 mt-4">
-                  <Button onClick={() => onEdit(course)} variant="outline">
-                    Edit
+                  <Button variant="outline">
+                    <Link to={"/edit-course/" + course._id}>Edit</Link>
                   </Button>
                   <Button
                     onClick={() => handleDelete(course._id)}

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-toastify";
-
+import { createCourse } from "@/services/courseService";
 const CreateCourseForm = () => {
   const [courseData, setCourseData] = useState({
     title: "",
@@ -13,7 +14,7 @@ const CreateCourseForm = () => {
     price: "",
     image: null,
   });
-
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image") {
@@ -34,13 +35,16 @@ const CreateCourseForm = () => {
     formData.append("image", courseData.image);
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/courses",
-        formData
-      );
+      setLoading(true);
+      const response = await createCourse(formData);
+      // const response = await axios.post(
+      //   "http://localhost:4000/api/courses",
+      //   formData
+      // );
       toast.success("Course created successfully!");
-      console.log(response.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast.error(error.response?.data?.error || "Error creating course");
     }
   };
@@ -52,7 +56,9 @@ const CreateCourseForm = () => {
     >
       <h2 className="text-2xl font-bold mb-6">Create New Course</h2>
 
-      <Label  className="my-2" htmlFor="title">Course Title</Label>
+      <Label className="my-2" htmlFor="title">
+        Course Title
+      </Label>
       <Input
         type="text"
         name="title"
@@ -63,7 +69,9 @@ const CreateCourseForm = () => {
         required
       />
 
-      <Label  className="my-2" htmlFor="description">Description</Label>
+      <Label className="my-2" htmlFor="description">
+        Description
+      </Label>
       <Textarea
         name="description"
         id="description"
@@ -73,7 +81,9 @@ const CreateCourseForm = () => {
         required
       />
 
-      <Label  className="my-2" htmlFor="price">Price (INR)</Label>
+      <Label className="my-2" htmlFor="price">
+        Price (INR)
+      </Label>
       <Input
         type="number"
         name="price"
@@ -84,7 +94,9 @@ const CreateCourseForm = () => {
         required
       />
 
-      <Label  className="my-2" htmlFor="image">Upload Image</Label>
+      <Label className="my-2" htmlFor="image">
+        Upload Image
+      </Label>
       <Input
         type="file"
         name="image"
@@ -93,10 +105,16 @@ const CreateCourseForm = () => {
         onChange={handleChange}
         required
       />
-
-      <Button type="submit" className="mt-6 w-full">
-        Create Course
-      </Button>
+      {loading ? (
+        <Button disabled className="mt-6 w-full">
+          <Loader2 className="animate-spin" />
+          Please wait
+        </Button>
+      ) : (
+        <Button type="submit" className="mt-6 w-full">
+          Create Course
+        </Button>
+      )}
     </form>
   );
 };
