@@ -126,7 +126,6 @@ export default function UpdateCourses() {
           id="image"
           accept="image/*"
           onChange={handleChange}
-          required
         />
 
         {loading ? (
