@@ -42,7 +42,7 @@ const CourseList = ({ onEdit }) => {
     return <Loader />;
   }
   return (
-    <div className="mx-auto p-6">
+    <div className="mx-auto md:p-6">
       <h2 className="text-2xl font-bold mb-4">Courses</h2>
       <Link to="/create-Courses">
         <Button className="mb-6">Create New Page</Button>

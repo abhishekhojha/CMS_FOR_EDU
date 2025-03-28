@@ -5,6 +5,7 @@ function ProtectedRoute({ children }) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   return isAuthenticated ? children : <Navigate to="/login" />;
+  // restricted
 }
 
 export default ProtectedRoute;

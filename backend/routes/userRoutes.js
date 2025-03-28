@@ -40,7 +40,15 @@ router.post(
         expiresIn: "7d",
       });
 
-      res.status(201).json({ token, user: { id: user._id, name, email } });
+      res.status(201).json({
+        token,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -73,9 +81,14 @@ router.post(
         expiresIn: "7d",
       });
 
-      res.json({
+      res.status(201).json({
         token,
-        user: { id: user._id, name: user.name, email: user.email },
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
       });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -119,7 +132,7 @@ router.get("/all", hasRole, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    
+
     return res.status(500).json({ err: error });
   }
 });
