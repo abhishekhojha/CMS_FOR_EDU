@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { getCourses } from "@/services/courseService";
+import { getCourses, deleteCourse } from "@/services/courseService";
 import Loader from "@/components/ui/Loader";
 
 const CourseList = ({ onEdit }) => {
@@ -26,8 +26,12 @@ const CourseList = ({ onEdit }) => {
   };
 
   const handleDelete = async (id) => {
+    let CourseDel = confirm("Do you want to delete it");
+    if(!CourseDel)
+      return false
     try {
-      await axios.delete(`http://localhost:5000/api/courses/${id}`);
+      // await axios.delete(`http://localhost:5000/api/courses/${id}`);
+      await deleteCourse(id)
       toast.success("Course deleted successfully");
       fetchCourses();
     } catch (error) {
