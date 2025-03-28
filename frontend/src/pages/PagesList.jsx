@@ -34,9 +34,9 @@ function PagesList() {
   return (
     <div className='mt-4'>
       <h1 className="text-2xl font-bold mb-4">All Pages</h1>
-      <Link to="/create-pages">
+      {/* <Link to="/create-pages">
         <Button className="mb-4">Create New Page</Button>
-      </Link>
+      </Link> */}
 
       {pages.length === 0 ? (
         <p>No pages found</p>

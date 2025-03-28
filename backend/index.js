@@ -15,6 +15,10 @@ const paymentRoutes = require("./routes/orderRoute");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Parse JSON request body
 app.use(cors()); // Enable CORS for frontend access
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://cms-for-edu-1kac.vercel.app'], 
+  credentials: true,
+}));
 process.env.TZ = "Asia/Calcutta";
 // ✅ MongoDB Connection
 mongoose
