@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginSchema } from "@/utils/validation";
-import { loginSuccess } from '@/redux/authSlice';
-import { useDispatch } from 'react-redux';
+import { loginSuccess } from "@/redux/authSlice";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { Loader2 } from "lucide-react";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,15 +39,22 @@ function Login() {
     }
 
     try {
+      setLoading(true);
       const response = await axios.post(`${API_URL}/users/login`, formData);
       const { token, user } = response.data;
-      
+
       dispatch(loginSuccess({ token, user }));
       toast.success("Login successful!");
-      setTimeout(() => navigate('/dashboard'), 2000);
-    } catch (error) {     
-        console.log(error);
-        toast.error(error.response?.data?.message || error.response?.data?.error || "Login failed");
+      setLoading(false);
+      setTimeout(() => navigate("/dashboard"), 2000);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast.error(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Login failed"
+      );
     }
   };
 
@@ -78,9 +87,16 @@ function Login() {
               <p className="text-red-500 text-sm">{errors.password}</p>
             )}
           </div>
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
+          {loading ? (
+            <Button disabled className="w-full">
+              <Loader2 className="animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <Button type="submit" className="w-full">
+              Login
+            </Button>
+          )}
         </form>
         <p className="mt-4">
           Don't have an account?{" "}
