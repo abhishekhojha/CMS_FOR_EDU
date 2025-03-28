@@ -4,7 +4,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const protect = require("../middleware/authMiddleware");
-
+const hasRole = require("../middleware/Auth");
 const router = express.Router();
 
 // ✅ Register a new user
@@ -23,9 +23,9 @@ router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array() });
-    
+
     const { name, email, password } = req.body;
-    
+
     try {
       // Check if user already exists
       let user = await User.findOne({ email });
@@ -84,7 +84,7 @@ router.post(
 );
 
 // ✅ Get user profile (Protected)
-router.get("/profile",protect, async (req, res) => {
+router.get("/profile", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -95,4 +95,32 @@ router.get("/profile",protect, async (req, res) => {
   }
 });
 
+// Get All Users
+router.get("/all", hasRole, async (req, res) => {
+  try {
+    let { page, limit } = req.query;
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    const skip = (page - 1) * limit;
+    const users = await User.find()
+      .select("-password")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    const totalUsers = await User.countDocuments();
+
+    return res.status(200).json({
+      success: true,
+      totalUsers,
+      currentPage: page,
+      totalPages: Math.ceil(totalUsers / limit),
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+    
+    return res.status(500).json({ err: error });
+  }
+});
 module.exports = router;

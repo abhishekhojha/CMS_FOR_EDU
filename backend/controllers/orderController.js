@@ -119,8 +119,7 @@ const getAllOrders = async (req, res) => {
       .limit(limit);
 
     const totalOrders = await Order.countDocuments();
-
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       totalOrders,
       currentPage: page,
@@ -128,8 +127,7 @@ const getAllOrders = async (req, res) => {
       orders,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 

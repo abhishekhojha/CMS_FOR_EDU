@@ -17,6 +17,7 @@ import CreateCourseForm from "@/pages/CreateCourseForm";
 import CourseList from "@/pages/Courses";
 import OrdersList from "@/pages/Orders";
 import UpdateCourses from "@/pages/UpdateCourses";
+import Users from "@/pages/Users";
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -33,6 +34,7 @@ function AppRoutes() {
                   <Route path="/dashboard" element={<Home />} />
                   <Route path="/pages" element={<PagesList />} />
                   <Route path="/orders" element={<OrdersList />} />
+                  <Route path="/users" element={<Users />} />
                   <Route path="/courses" element={<CourseList />} />
                   <Route path="/create-pages" element={<CreatePage />} />
                   <Route
