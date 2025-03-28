@@ -60,9 +60,9 @@ function AppRoutes() {
           {/* <Route exact path="/" element={<Welcome />} /> */}
 
           {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/restricted" element={<UnauthenticatedPage />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/restricted" element={<UnauthenticatedPage />} />
           
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>

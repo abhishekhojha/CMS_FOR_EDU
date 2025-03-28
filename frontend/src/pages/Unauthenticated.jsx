@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/redux/authSlice";
 
 const UnauthenticatedPage = () => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
+  useEffect(() => {
+    setTimeout(() => {
+      handleLogout();
+    }, [1000]);
+  }, []);
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -18,12 +30,6 @@ const UnauthenticatedPage = () => {
             className="bg-blue-500 hover:bg-blue-600 text-white"
           >
             Login
-          </Button>
-          <Button
-            onClick={() => navigate("/")}
-            className="bg-gray-300 hover:bg-gray-400 text-black"
-          >
-            Go Back
           </Button>
         </div>
       </div>
