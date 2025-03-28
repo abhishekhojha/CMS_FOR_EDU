@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Home, Info, Mail, LogOut, Menu, X } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '@/redux/authSlice';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Home,
+  Info,
+  Mail,
+  LogOut,
+  Menu,
+  X,
+  User,
+  ShoppingBag,
+  StickyNote,
+  Notebook,
+} from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/redux/authSlice";
 
 function Sidebar() {
   const dispatch = useDispatch();
@@ -14,10 +25,11 @@ function Sidebar() {
   };
 
   const menuItems = [
-    { path: '/dashboard', icon: <Home size={20} />, label: 'Home' },
-    { path: '/pages', icon: <Info size={20} />, label: 'Pages' },
-    { path: '/courses', icon: <Info size={20} />, label: 'Courses' },
-    { path: '/orders', icon: <Info size={20} />, label: 'Orders' },
+    { path: "/dashboard", icon: <Home size={20} />, label: "Home" },
+    { path: "/pages", icon: <StickyNote size={20} />, label: "Pages" },
+    { path: "/courses", icon: <Notebook size={20} />, label: "Courses" },
+    { path: "/orders", icon: <ShoppingBag size={20} />, label: "Orders" },
+    { path: "/users", icon: <User size={20} />, label: "Users" },
     // { path: '/contact', icon: <Mail size={20} />, label: 'Users' },
   ];
 
@@ -33,7 +45,9 @@ function Sidebar() {
 
       {/* Sidebar Container */}
       <div
-        className={`fixed lg:static inset-y-0 left-0 w-64 bg-gray-900 text-white pt-18 lg:pt-6 p-6 lg:min-h-screen transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
+        className={`fixed lg:static inset-y-0 left-0 w-64 bg-gray-900 text-white pt-18 lg:pt-6 p-6 lg:min-h-screen transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
       >
         <h1 className="text-2xl font-bold mb-8">Dashboard</h1>
 
