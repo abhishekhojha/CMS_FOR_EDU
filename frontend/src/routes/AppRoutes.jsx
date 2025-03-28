@@ -30,7 +30,9 @@ function AppRoutes() {
             {isAuthenticated && <Sidebar />}
             <div className="w-full lg:flex-1">
               {isAuthenticated && <TopBar />}
-              <div className={`pt-[85px] md:pt-16 p-3 md:p-6 lg:max-h-screen lg:overflow-y-auto`}>
+              <div
+                className={`pt-[85px] md:pt-16 p-3 md:p-6 lg:max-h-screen lg:overflow-y-auto`}
+              >
                 <Routes>
                   <Route path="/dashboard" element={<Home />} />
                   <Route path="/pages" element={<PagesList />} />
@@ -48,9 +50,6 @@ function AppRoutes() {
                     element={<SectionManagement />}
                   />
                   <Route path="/edit-course/:id" element={<UpdateCourses />} />
-
-                  {/* <Route path="/about" element={<About />} /> */}
-                  {/* <Route path="/contact" element={<Contact />} /> */}
                 </Routes>
               </div>
             </div>
@@ -63,7 +62,7 @@ function AppRoutes() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/restricted" element={<UnauthenticatedPage />} />
-          
+
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>

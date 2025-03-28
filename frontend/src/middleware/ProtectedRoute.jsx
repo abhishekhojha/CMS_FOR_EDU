@@ -3,7 +3,8 @@ import { Navigate } from "react-router-dom";
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-
+  console.log("hello");
+  
   return isAuthenticated ? (
     user.role == "admin" ? (
       children
