@@ -16,6 +16,10 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    discountedAmount: {
+      type: Number,
+      default: null,
+    },
     razorpayOrderId: {
       type: String,
       required: true,
@@ -31,6 +35,10 @@ const orderSchema = new mongoose.Schema(
     },
     paymentDate: {
       type: Date,
+      default: null,
+    },
+    promoCode: {
+      type: String,
       default: null,
     },
   },

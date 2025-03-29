@@ -78,9 +78,6 @@ function PromoCodeList() {
                     )}
                   </td>
                   <td className="p-3 border flex gap-2 justify-center">
-                    <Link to={`/promo/${promo._id}`}>
-                      <Button>View</Button>
-                    </Link>
                     <Link to={`/edit-promo/${promo._id}`}>
                       <Button>Edit</Button>
                     </Link>

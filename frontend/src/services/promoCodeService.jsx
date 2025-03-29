@@ -14,12 +14,19 @@ export const getPromoCodes = async () => {
   const response = await axios.get(API_URL_PATH);
   return response.data;
 };
-
+// ➡️ Get Promo Code By Id
+export const getPromoCodeById = async (id,) => {
+    const response = await axios.get(`${API_URL_PATH}/${id}`);
+    return response.data;
+  };
+  
+  
 // ➡️ Update Promo Code
 export const updatePromoCode = async (id, data) => {
   const response = await axios.put(`${API_URL_PATH}/${id}`, data);
   return response.data;
 };
+
 
 // ➡️ Delete Promo Code
 export const deletePromoCode = async (id) => {

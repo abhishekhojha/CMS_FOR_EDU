@@ -88,7 +88,9 @@ import OrdersList from "@/pages/Orders";
 import UpdateCourses from "@/pages/UpdateCourses";
 import Users from "@/pages/Users";
 import UnauthenticatedPage from "@/pages/Unauthenticated";
-import PromoCodeList from "@/pages/PromoCodeList"
+import PromoCodeList from "@/pages/PromoCodeList";
+import PromoCodeForm from "@/pages/PromoCodeForm";
+
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -125,7 +127,23 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        
+
+        <Route
+          path="/create-promo"
+          element={
+            <ProtectedRoute>
+              <PromoCodeForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-promo/:id"
+          element={
+            <ProtectedRoute>
+              <PromoCodeForm />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/orders"
           element={
