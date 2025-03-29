@@ -2,7 +2,7 @@ const Order = require("../models/Order");
 const Razorpay = require("razorpay");
 const Course = require("../models/Course");
 const User = require("../models/User");
-
+const PromoCode = require("../models/PromoCode")
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -11,48 +11,64 @@ const razorpayInstance = new Razorpay({
 // Create Order
 const createOrder = async (req, res) => {
   try {
-    const { courseId } = req.body;
+    const { courseId, promoCode } = req.body;
     const userId = req.user.id;
 
-    // Fetch the course details to calculate the amount
+    // Fetch course details
     const course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ message: "Course not found" });
-    }
+    if (!course) return res.status(404).json({ message: "Course not found" });
 
-    // Calculate the amount (assuming amount is in cents)
-    const amount = course.price * 100; // Razorpay expects amount in paise (1 = 0.01 INR)
+    let amount = course.price * 100; // In paise (1 INR = 100 paise)
+    let discountedAmount = amount;
+
+    // Apply Promo Code if provided
+    if (promoCode) {
+      const promo = await PromoCode.findOne({
+        code: promoCode,
+        isActive: true,
+      });
+
+      if (!promo)
+        return res
+          .status(400)
+          .json({ message: "Invalid or inactive promo code" });
+      if (new Date(promo.expiryDate) < new Date())
+        return res.status(400).json({ message: "Promo code expired" });
+
+      const discount = (promo.discountPercentage / 100) * amount;
+      const finalDiscount = promo.maxDiscount
+        ? Math.min(discount, promo.maxDiscount * 100)
+        : discount;
+
+      discountedAmount = Math.max(amount - finalDiscount, 0);
+    }
 
     // Create order in Razorpay
     const options = {
-      amount: amount, // amount in smallest currency unit (paise)
+      amount: discountedAmount,
       currency: "INR",
       receipt: `order_rcptid_${Math.floor(Math.random() * 1000)}`,
       payment_capture: 1,
     };
 
-    razorpayInstance.orders.create(options, async (err, order) => {
-      if (err) {
-        return res
-          .status(500)
-          .json({ message: "Error creating Razorpay order", error: err });
-      }
+    const order = await razorpayInstance.orders.create(options);
 
-      // Create order in the local database
-      const newOrder = new Order({
-        user: userId,
-        course: courseId,
-        amount: amount,
-        razorpayOrderId: order.id,
-      });
+    // Save order to the database
+    const newOrder = new Order({
+      user: userId,
+      course: courseId,
+      amount: amount / 100,
+      discountedAmount: discountedAmount / 100,
+      razorpayOrderId: order.id,
+      promoCode: promoCode || null,
+    });
 
-      await newOrder.save();
+    await newOrder.save();
 
-      res.status(200).json({
-        success: true,
-        orderId: order.id,
-        amount: amount,
-      });
+    res.status(200).json({
+      success: true,
+      orderId: order.id,
+      amount: discountedAmount,
     });
   } catch (err) {
     console.error(err);
