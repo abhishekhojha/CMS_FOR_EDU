@@ -21,7 +21,6 @@ router.get("/apply/:code", async (req, res) => {
     const { code } = req.params;
 
     const promoCode = await PromoCode.findOne({ code });
-    console.log(code,promoCode);
     
     if (!promoCode) {
       return res.status(404).json({ message: "Promo code not found" });
