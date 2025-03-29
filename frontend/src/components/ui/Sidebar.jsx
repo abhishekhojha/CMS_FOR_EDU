@@ -26,7 +26,7 @@ function Sidebar() {
   };
 
   const menuItems = [
-    { path: "/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+    { path: "/", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
     { path: "/pages", icon: <StickyNote size={20} />, label: "Pages" },
     { path: "/courses", icon: <Notebook size={20} />, label: "Courses" },
     { path: "/orders", icon: <ShoppingBag size={20} />, label: "Orders" },

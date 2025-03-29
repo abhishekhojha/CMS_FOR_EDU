@@ -102,7 +102,7 @@ function AppRoutes() {
 
         {/* ✅ Protected Routes */}
         <Route
-          path="/dashboard"
+          path="/"
           element={
             <ProtectedRoute>
               <Home />
