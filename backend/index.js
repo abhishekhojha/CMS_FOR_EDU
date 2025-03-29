@@ -11,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const courseRoutes = require("./routes/courseRoutes");
 const paymentRoutes = require("./routes/orderRoute");
+const promoCodeRoutes = require("./routes/promoCodeRoutes")
 // ✅ Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Parse JSON request body
@@ -33,10 +34,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/cloudinary", cloudinaryRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/payment", paymentRoutes);
-app.post("/api/courses-test", (req, res) => {
-  console.log("Received Data:", req.body); // Debugging
-  res.status(200).json({ message: "Course data received", data: req.body });
-});
+app.use("/api/promocodes", promoCodeRoutes);
+
 // ✅ Default Route
 app.get("/", (req, res) => {
   res.send("API is running...");

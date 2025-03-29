@@ -31,7 +31,7 @@ function Sidebar() {
     { path: "/courses", icon: <Notebook size={20} />, label: "Courses" },
     { path: "/orders", icon: <ShoppingBag size={20} />, label: "Orders" },
     { path: "/users", icon: <User size={20} />, label: "Users" },
-    // { path: '/contact', icon: <Mail size={20} />, label: 'Users' },
+    { path: '/promo-codes', icon: <Mail size={20} />, label: 'Promo Codes' },
   ];
 
   return (

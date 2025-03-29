@@ -88,7 +88,7 @@ import OrdersList from "@/pages/Orders";
 import UpdateCourses from "@/pages/UpdateCourses";
 import Users from "@/pages/Users";
 import UnauthenticatedPage from "@/pages/Unauthenticated";
-
+import PromoCodeList from "@/pages/PromoCodeList"
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -117,6 +117,15 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/promo-codes"
+          element={
+            <ProtectedRoute>
+              <PromoCodeList />
+            </ProtectedRoute>
+          }
+        />
+        
         <Route
           path="/orders"
           element={
