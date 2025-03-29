@@ -22,7 +22,7 @@ router.post(
       .matches(/^[0-9]{10}$/)
       .withMessage("Phone number must be 10 digits"),
     body("alternatePhone")
-      .optional()
+      .optional({ checkFalsy: true })
       .matches(/^[0-9]{10}$/)
       .withMessage("Alternate phone number must be 10 digits"),
   ],

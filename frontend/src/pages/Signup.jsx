@@ -52,6 +52,7 @@ function Signup() {
       console.log(error.response);
       toast.error(
         error.response?.data?.message ||
+          error.response?.data?.errors?.map((err) => err.msg).join(", ") ||
           error.response?.data?.error ||
           "Signup failed server error"
       );
