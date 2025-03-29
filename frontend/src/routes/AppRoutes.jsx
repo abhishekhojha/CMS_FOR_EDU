@@ -90,6 +90,8 @@ import Users from "@/pages/Users";
 import UnauthenticatedPage from "@/pages/Unauthenticated";
 import PromoCodeList from "@/pages/PromoCodeList";
 import PromoCodeForm from "@/pages/PromoCodeForm";
+import NotificationsList from "@/pages/NotificationsList";
+import NotificationForm from "@/pages/NotificationForm";
 
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -141,6 +143,22 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <PromoCodeForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <NotificationsList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-notifications"
+          element={
+            <ProtectedRoute>
+              <NotificationForm />
             </ProtectedRoute>
           }
         />
