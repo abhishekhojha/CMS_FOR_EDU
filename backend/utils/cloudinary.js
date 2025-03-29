@@ -10,8 +10,11 @@ cloudinary.config({
 
 const uploadImage = async (filePath) => {
   try {
+    console.log(filePath);
+    
     const result = await cloudinary.uploader.upload(filePath, {
-      folder: "uploads", // Organize images in a folder
+      folder: "uploads",
+      resource_type: "auto" // Organize  in a folder
     });
     return result;
   } catch (error) {

@@ -92,6 +92,7 @@ import PromoCodeList from "@/pages/PromoCodeList";
 import PromoCodeForm from "@/pages/PromoCodeForm";
 import NotificationsList from "@/pages/NotificationsList";
 import NotificationForm from "@/pages/NotificationForm";
+import FileManager from "@/pages/FileManager";
 
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -159,6 +160,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <NotificationForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/files"
+          element={
+            <ProtectedRoute>
+              <FileManager />
             </ProtectedRoute>
           }
         />

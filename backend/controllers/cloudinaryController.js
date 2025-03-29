@@ -1,24 +1,41 @@
+const multiparty = require("multiparty");
 const { uploadImage, deleteImage } = require("../utils/cloudinary");
 const Image = require("../models/Image");
 
-// Upload Image
+// Upload Image using Multiparty
 exports.uploadImageController = async (req, res) => {
-  try {
-    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  const form = new multiparty.Form();
 
-    const result = await uploadImage(req.file.path);
-    const newImage = new Image({
-      imageUrl: result.secure_url,
-      imagePublicId: result.public_id,
-    });
+  form.parse(req, async (error, fields, files) => {
+    try {
+      if (error) {
+        return res.status(400).json({ error: "File parsing error" });
+      }
 
-    await newImage.save();
-    res
-      .status(200)
-      .json({ message: "Image uploaded and saved to DB", newImage });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+      if (!files.file || !files.file[0]) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+
+      const file = files.file[0];
+
+      // Upload to Cloudinary
+      
+      const result = await uploadImage(file.path);
+
+      const newImage = new Image({
+        imageUrl: result.secure_url,
+        imagePublicId: result.public_id,
+      });
+
+      await newImage.save();
+
+      res
+        .status(200)
+        .json({ message: "Image uploaded and saved to DB", newImage });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 };
 
 // Delete Image

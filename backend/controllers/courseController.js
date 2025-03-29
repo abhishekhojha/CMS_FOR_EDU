@@ -30,7 +30,9 @@ exports.createCourse = async (req, res) => {
         const imagePath = files.image[0].path;
 
         // Upload image to Cloudinary
-        const result = await cloudinary.uploader.upload(imagePath);
+        const result = await cloudinary.uploader.upload(imagePath, {
+          folder: "courses", // Organize images in a folder
+        });
         imageUrl = result.secure_url;
         imagePublicId = result.public_id;
       }
@@ -102,7 +104,9 @@ exports.updateCourse = async (req, res) => {
           await cloudinary.uploader.destroy(course.imagePublicId); // Delete previous image
         }
 
-        const result = await cloudinary.uploader.upload(files.image[0].path);
+        const result = await cloudinary.uploader.upload(files.image[0].path, {
+          folder: "courses", // Organize images in a folder
+        });
         updatedData.imageUrl = result.secure_url;
         updatedData.imagePublicId = result.public_id;
       }

@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
   Bell,
   CirclePercent,
+  File
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/redux/authSlice";
@@ -33,6 +34,7 @@ function Sidebar() {
     { path: "/courses", icon: <Notebook size={20} />, label: "Courses" },
     { path: "/orders", icon: <ShoppingBag size={20} />, label: "Orders" },
     { path: "/users", icon: <User size={20} />, label: "Users" },
+    { path: "/files", icon: <File size={20} />, label: "Files" },
     {
       path: "/promo-codes",
       icon: <CirclePercent size={20} />,
