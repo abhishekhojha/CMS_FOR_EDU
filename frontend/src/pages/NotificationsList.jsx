@@ -74,7 +74,7 @@ export default function NotificationsList() {
             <tbody>
               {notifications.map((notification) => (
                 <tr key={notification._id} className="hover:bg-gray-50">
-                  <td className="p-3 w-[250px]">{notification.message}</td>
+                  <td className="p-3 border w-[250px]">{notification.message}</td>
                   <td className="p-3 border">
                     {new Date(notification.createdAt).toLocaleString()}
                   </td>
