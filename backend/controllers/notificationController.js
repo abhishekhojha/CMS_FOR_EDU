@@ -43,14 +43,14 @@ exports.getUserNotifications = async (req, res) => {
     const notifications = await Notification.find({ "recipients.user": userId })
       .sort({ createdAt: -1 })
       .select("message createdAt recipients.isRead");
-
+    const unreadNotification = notifications;
     // Mark notifications as read
     await Notification.updateMany(
       { "recipients.user": userId, "recipients.isRead": false },
       { $set: { "recipients.$.isRead": true } }
     );
 
-    res.status(200).json(notifications);
+    res.status(200).json(unreadNotification);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
