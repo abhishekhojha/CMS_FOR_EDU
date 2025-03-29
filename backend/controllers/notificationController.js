@@ -38,9 +38,17 @@ exports.createNotification = async (req, res) => {
 exports.getUserNotifications = async (req, res) => {
   try {
     const userId = req.user.id;
+
+    // Find notifications
     const notifications = await Notification.find({ "recipients.user": userId })
       .sort({ createdAt: -1 })
       .select("message createdAt recipients.isRead");
+
+    // Mark notifications as read
+    await Notification.updateMany(
+      { "recipients.user": userId, "recipients.isRead": false },
+      { $set: { "recipients.$.isRead": true } }
+    );
 
     res.status(200).json(notifications);
   } catch (error) {
