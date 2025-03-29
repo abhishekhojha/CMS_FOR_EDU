@@ -22,7 +22,7 @@ const UnauthenticatedPage = () => {
       <div className="bg-white p-8 rounded-2xl shadow-lg max-w-sm w-full text-center">
         <h1 className="text-3xl font-bold text-red-600 mb-4">Access Denied</h1>
         <p className="text-gray-600 mb-6">
-          You need to be logged in to access this page.
+          You need to be logged in as admin to access this page.
         </p>
         <div className="space-x-4">
           <Button

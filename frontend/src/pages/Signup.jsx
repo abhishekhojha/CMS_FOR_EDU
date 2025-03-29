@@ -7,14 +7,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signupSchema } from "@/utils/validation";
 import { toast } from "react-toastify";
-import { useDispatch } from 'react-redux';
-import { loginSuccess } from '@/redux/authSlice';
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/redux/authSlice";
 
 function Signup() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    phone: "",
+    alternatePhone: "",
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -41,13 +43,18 @@ function Signup() {
     }
 
     try {
-      await axios.post(`${API_URL}/users/register`, formData);
+      const response = await axios.post(`${API_URL}/users/register`, formData);
       toast.success("Signup successful!");
+      const { token, user } = response.data;
       dispatch(loginSuccess({ token, user }));
-      setTimeout(() => navigate('/dashboard'), 1500);
+      setTimeout(() => navigate("/dashboard"), 1500);
     } catch (error) {
       console.log(error.response);
-      toast.error(error.response?.data?.message || error.response?.data?.error || "Signup failed server error");
+      toast.error(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Signup failed server error"
+      );
     }
   };
 
@@ -78,6 +85,30 @@ function Signup() {
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <Label htmlFor="phone">Phone</Label>
+            <Input
+              id="phone"
+              type="text"
+              onChange={handleChange}
+              value={formData.phone}
+            />
+            {errors.phone && (
+              <p className="text-red-500 text-sm">{errors.phone}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <Label htmlFor="alternatePhone">Alternate Phone</Label>
+            <Input
+              id="alternatePhone"
+              type="text"
+              onChange={handleChange}
+              value={formData.alternatePhone}
+            />
+            {errors.alternatePhone && (
+              <p className="text-red-500 text-sm">{errors.alternatePhone}</p>
             )}
           </div>
           <div className="mb-4">

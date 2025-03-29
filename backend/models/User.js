@@ -16,6 +16,25 @@ const UserSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user"
     },
+    phone: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v) {
+          return /^[0-9]{10}$/.test(v); // Simple 10-digit phone number validation
+        },
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
+    },
+    alternatePhone: {
+      type: String,
+      validate: {
+        validator: function (v) {
+          return /^[0-9]{10}$/.test(v); // Simple 10-digit phone number validation
+        },
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
+    },
     password: {
       type: String,
       required: [true, "Password is required"],
