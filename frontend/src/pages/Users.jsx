@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getUsers } from "@/services/userServices";
+import Loader from "@/components/ui/Loader";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -29,7 +30,9 @@ export default function Users() {
       setCurrentPage(newPage);
     }
   };
-
+  if (loading) {
+    return <Loader />
+  }
   return (
     <div className="mt-4">
       <h1 className="text-2xl font-bold mb-4">All Users</h1>

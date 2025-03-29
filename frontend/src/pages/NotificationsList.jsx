@@ -7,6 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import Loader from "@/components/ui/Loader";
 
 export default function NotificationsList() {
   const [notifications, setNotifications] = useState([]);
@@ -47,7 +48,9 @@ export default function NotificationsList() {
       setPage(newPage);
     }
   };
-
+  if (loading) {
+    return <Loader />
+  }
   return (
     <div className="mt-4">
       <h1 className="text-2xl font-bold mb-4">Notifications</h1>
