@@ -47,7 +47,6 @@ export default function NotificationForm() {
     try {
       await createNotification(formData);
       toast.success("Notification created successfully!");
-      fetchNotifications();
       setFormData({ courseId: "", message: "" });
     } catch (error) {
       toast.error(

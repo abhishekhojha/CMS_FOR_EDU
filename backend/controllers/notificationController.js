@@ -48,6 +48,31 @@ exports.getUserNotifications = async (req, res) => {
   }
 };
 
+// Get All Notifications for Users
+exports.getAllNotifications = async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.query; // Default page = 1, limit = 10
+    const skip = (page - 1) * limit;
+
+    const notifications = await Notification.find()
+      .sort({ createdAt: -1 })
+      .select("message createdAt recipients.isRead")
+      .skip(parseInt(skip))
+      .limit(parseInt(limit));
+
+    const totalNotifications = await Notification.countDocuments();
+
+    res.status(200).json({
+      notifications,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(totalNotifications / limit),
+      totalNotifications,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Mark Notification as Read
 exports.markNotificationAsRead = async (req, res) => {
   try {

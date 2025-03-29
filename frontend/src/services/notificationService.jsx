@@ -27,7 +27,9 @@ export const createNotification = async (data) => {
 export const getNotifications = async (query = "") => {
   return await axios.get(API_URL_PATH + query);
 };
-
+export const getAllNotifications = async () => {
+  return await axios.get(API_URL_PATH + "/all");
+};
 // Get Notification by ID
 export const getNotificationById = async (id) => {
   return await axios.get(`${API_URL_PATH}/${id}`);
