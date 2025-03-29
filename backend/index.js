@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 4000;
 const courseRoutes = require("./routes/courseRoutes");
 const paymentRoutes = require("./routes/orderRoute");
 const promoCodeRoutes = require("./routes/promoCodeRoutes")
+const notificationRoutes = require("./routes/notificationRoutes")
 // ✅ Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Parse JSON request body
@@ -35,6 +36,7 @@ app.use("/api/cloudinary", cloudinaryRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/promocodes", promoCodeRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // ✅ Default Route
 app.get("/", (req, res) => {
