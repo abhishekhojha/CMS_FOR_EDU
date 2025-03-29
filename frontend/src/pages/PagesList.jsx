@@ -60,9 +60,6 @@ function PagesList() {
                   <td className="p-3 border">{page.description}</td>
                   <td className="p-3 border">{page.createdBy.name}</td>
                   <td className="p-3 border-t flex gap-2 justify-center">
-                    <Link to={`/pages/${page._id}/${page.title}`}>
-                      <Button className="">View</Button>
-                    </Link>
                     <Link to={`/edit-pages/${page._id}/${page.title}`}>
                       <Button className="">Edit</Button>
                     </Link>
