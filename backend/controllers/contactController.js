@@ -12,11 +12,25 @@ exports.createContact = async (req, res) => {
   }
 };
 
-// Get All Contacts
+// Get Contacts with Pagination
 exports.getContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find();
-    res.status(200).json(contacts);
+    const { page = 1, limit = 10 } = req.query; // Default to page 1, limit 10
+    const skip = (page - 1) * limit;
+
+    const contacts = await Contact.find()
+      .skip(skip)
+      .limit(Number(limit))
+      .sort({ createdAt: -1 });
+
+    const totalContacts = await Contact.countDocuments();
+
+    res.status(200).json({
+      contacts,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalContacts / limit),
+      totalContacts,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

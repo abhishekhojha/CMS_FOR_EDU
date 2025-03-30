@@ -38,6 +38,8 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/promocodes", promoCodeRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/contacts", contactRoutes);
+
 
 // ✅ Default Route
 app.get("/", (req, res) => {
