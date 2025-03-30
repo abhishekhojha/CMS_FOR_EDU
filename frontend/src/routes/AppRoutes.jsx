@@ -94,6 +94,7 @@ import NotificationsList from "@/pages/NotificationsList";
 import NotificationForm from "@/pages/NotificationForm";
 import FileManager from "@/pages/FileManager";
 import OrderByCourseList from "@/pages/OrderByCourse";
+import ContactList from "@/pages/Contact";
 
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -169,6 +170,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <FileManager />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/contacts"
+          element={
+            <ProtectedRoute>
+              <ContactList />
             </ProtectedRoute>
           }
         />
