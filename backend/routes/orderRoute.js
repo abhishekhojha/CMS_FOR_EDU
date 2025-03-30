@@ -4,6 +4,7 @@ const {
   createOrder,
   verifyPayment,
   getAllOrders,
+  getOrdersByCourseId
 } = require("../controllers/orderController");
 const hasRole = require("../middleware/Auth");
 
@@ -34,5 +35,6 @@ router.get("/purchased-courses",protect ,async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+router.get("/filter/:courseId", hasRole, getOrdersByCourseId);
 
 module.exports = router;

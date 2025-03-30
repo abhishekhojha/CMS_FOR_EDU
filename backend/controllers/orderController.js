@@ -2,7 +2,7 @@ const Order = require("../models/Order");
 const Razorpay = require("razorpay");
 const Course = require("../models/Course");
 const User = require("../models/User");
-const PromoCode = require("../models/PromoCode")
+const PromoCode = require("../models/PromoCode");
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -146,9 +146,46 @@ const getAllOrders = async (req, res) => {
     return res.status(500).json({ message: "Server Error" });
   }
 };
+const getOrdersByCourseId = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    let { page, limit } = req.query;
 
+    // Set default values if not provided
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    // Fetch orders filtered by courseId
+    const orders = await Order.find({ course: courseId, status: "paid" })
+      .populate("user", "name email")
+      .populate("course", "title price")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalOrders = await Order.countDocuments({
+      course: courseId,
+      status: "paid",
+    });
+
+    return res.status(200).json({
+      success: true,
+      totalOrders,
+      currentPage: page,
+      totalPages: Math.ceil(totalOrders / limit),
+      orders,
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Server Error", error: err.message });
+  }
+};
 module.exports = {
   createOrder,
   verifyPayment,
   getAllOrders,
+  getOrdersByCourseId,
 };

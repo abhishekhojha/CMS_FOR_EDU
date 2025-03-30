@@ -42,3 +42,6 @@ export const updateOrder = async (id, data) => {
 export const deleteOrder = async (id) => {
   return await axios.delete(`${API_URL_PATH}/${id}`);
 };
+export const getOrdersByCourseId = async (courseId) => {
+  return await axios.get(`${API_URL_PATH}/filter/${courseId}`);
+};

@@ -27,11 +27,10 @@ const CourseList = ({ onEdit }) => {
 
   const handleDelete = async (id) => {
     let CourseDel = confirm("Do you want to delete it");
-    if(!CourseDel)
-      return false
+    if (!CourseDel) return false;
     try {
       // await axios.delete(`http://localhost:5000/api/courses/${id}`);
-      await deleteCourse(id)
+      await deleteCourse(id);
       toast.success("Course deleted successfully");
       fetchCourses();
     } catch (error) {
@@ -76,6 +75,9 @@ const CourseList = ({ onEdit }) => {
                     variant="destructive"
                   >
                     Delete
+                  </Button>
+                  <Button variant="outline">
+                    <Link to={"/orderCourse/" + course._id}>View Students</Link>
                   </Button>
                 </div>
               </CardContent>

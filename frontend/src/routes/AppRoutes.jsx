@@ -93,6 +93,7 @@ import PromoCodeForm from "@/pages/PromoCodeForm";
 import NotificationsList from "@/pages/NotificationsList";
 import NotificationForm from "@/pages/NotificationForm";
 import FileManager from "@/pages/FileManager";
+import OrderByCourseList from "@/pages/OrderByCourse";
 
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -171,6 +172,15 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/orderCourse/:courseId"
+          element={
+            <ProtectedRoute>
+              <OrderByCourseList />
+            </ProtectedRoute>
+          }
+        />
+        
         <Route
           path="/orders"
           element={

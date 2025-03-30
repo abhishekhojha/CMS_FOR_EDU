@@ -45,7 +45,7 @@ const OrdersList = () => {
                 <strong>Course:</strong> {order.course?.title}
               </p>
               <p>
-                <strong>Amount:</strong> ₹{order.amount / 100}
+                <strong>Amount:</strong> ₹{order.amount}
               </p>
               <p>
                 <strong>Status:</strong> {order.status}

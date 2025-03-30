@@ -4,7 +4,7 @@ const {
   getCourses,
   getCourse,
   updateCourse,
-  deleteCourse,
+  deleteCourse
 } = require("../controllers/courseController");
 const hasRole = require("../middleware/Auth");
 
@@ -15,5 +15,4 @@ router.get("/", getCourses);
 router.get("/:id", getCourse);
 router.put("/:id", hasRole, updateCourse);
 router.delete("/:id", hasRole, deleteCourse);
-
 module.exports = router;
