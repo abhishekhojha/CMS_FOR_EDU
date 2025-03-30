@@ -31,6 +31,12 @@ const UserSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: 6,
     },
+    role: {
+      type: String,
+      required: [true, "Role is required"],
+      enum: ["user", "admin"],
+      default: "user",
+    },
     isVerified: { type: Boolean, default: false },
     otp: { type: String },
     otpExpiry: { type: Date },
