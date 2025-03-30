@@ -228,8 +228,7 @@ router.post("/reset-password", async (req, res) => {
     }
 
     // Update Password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
+    user.password = newPassword;
 
     // Clear OTP fields
     user.otp = undefined;

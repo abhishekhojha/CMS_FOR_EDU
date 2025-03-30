@@ -217,6 +217,7 @@ const exportOrdersByCourseId = async (req, res) => {
     const headers = [
       "User Name",
       "User Email",
+      "User Phone",
       "Course Title",
       "Course Price",
       "Payment Status",
@@ -227,8 +228,9 @@ const exportOrdersByCourseId = async (req, res) => {
     // Add data rows
     orders.forEach((order) => {
       worksheet.addRow([
-        order.user?.name || "N/A",
-        order.user?.email || "N/A",
+        order?.name || "N/A",
+        order?.email || "N/A",
+        order?.contact || "N/A",
         order.course?.title || "N/A",
         order.course?.price || "N/A",
         order.status,
