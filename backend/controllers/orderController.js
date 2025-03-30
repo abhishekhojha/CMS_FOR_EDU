@@ -7,7 +7,7 @@ const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
-
+const ExcelJS = require("exceljs");
 // Create Order
 const createOrder = async (req, res) => {
   try {
@@ -185,12 +185,59 @@ const getOrdersByCourseId = async (req, res) => {
 };
 const exportOrdersByCourseId = async (req, res) => {
   try {
-    const orders = await Order.find({ course: courseId, status: "paid" })
+    const { courseId } = req.params;
+    let { limit } = req.query;
+
+    limit = parseInt(limit) || 50;
+
+    const orders = await Order.find({
+      course: courseId,
+      status: "paid",
+    })
       .populate("user", "name email")
       .populate("course", "title price")
       .sort({ createdAt: -1 })
       .limit(limit);
-  } catch (error) {}
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Sheet1");
+    const headers = [
+      "User Name",
+      "User Email",
+      "Course Title",
+      "Course Price",
+      "Payment Status",
+      "Payment Date",
+      "Order Created At",
+    ];
+    worksheet.addRow(headers);
+    // Add data rows
+    orders.forEach((order) => {
+      worksheet.addRow([
+        order.user?.name || "N/A",
+        order.user?.email || "N/A",
+        order.course?.title || "N/A",
+        order.course?.price || "N/A",
+        order.status,
+        order.paymentDate ? order.paymentDate.toLocaleString() : "N/A",
+        order.createdAt.toLocaleString(),
+      ]);
+    });
+    worksheet.getRow(1).font = { bold: true };
+    await workbook.xlsx.writeFile("orders.xlsx");
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=orders.xlsx");
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({ error });
+  }
 };
 module.exports = {
   createOrder,

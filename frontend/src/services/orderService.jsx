@@ -42,6 +42,11 @@ export const updateOrder = async (id, data) => {
 export const deleteOrder = async (id) => {
   return await axios.delete(`${API_URL_PATH}/${id}`);
 };
-export const getOrdersByCourseId = async (courseId) => {
-  return await axios.get(`${API_URL_PATH}/filter/${courseId}`);
+export const getOrdersByCourseId = async (courseId, page) => {
+  return await axios.get(`${API_URL_PATH}/filter/${courseId}?page=${page}`);
+};
+export const exportOrdersByCourseId = async (courseId,limit) => {
+  return await axios.get(`${API_URL_PATH}/export/${courseId}?limit=${limit === 'all' ? 0 : limit}`, {
+    responseType: "blob",
+  });
 };

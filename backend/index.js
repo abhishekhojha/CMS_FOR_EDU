@@ -13,6 +13,7 @@ const courseRoutes = require("./routes/courseRoutes");
 const paymentRoutes = require("./routes/orderRoute");
 const promoCodeRoutes = require("./routes/promoCodeRoutes")
 const notificationRoutes = require("./routes/notificationRoutes")
+const contactRoutes = require('./routes/contactRoutes');
 // ✅ Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Parse JSON request body

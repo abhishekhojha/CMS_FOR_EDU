@@ -6,8 +6,9 @@ const bcrypt = require("bcryptjs");
 const protect = require("../middleware/authMiddleware");
 const hasRole = require("../middleware/Auth");
 const router = express.Router();
+const sendOTPEmail = require("../middleware/Mailer");
 
-// ✅ Register a new user
+// ✅ Register or Resend OTP
 router.post(
   "/register",
   [
@@ -22,7 +23,7 @@ router.post(
       .matches(/^[0-9]{10}$/)
       .withMessage("Phone number must be 10 digits"),
     body("alternatePhone")
-      .optional({ checkFalsy: true })
+      .optional()
       .matches(/^[0-9]{10}$/)
       .withMessage("Alternate phone number must be 10 digits"),
   ],
@@ -32,36 +33,44 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
 
     const { name, email, password, phone, alternatePhone } = req.body;
-    let alternate_Phone = alternatePhone || null;
+    const alternate_Phone = alternatePhone || null;
+
     try {
       // Check if user already exists
       let user = await User.findOne({ email });
-      if (user) return res.status(400).json({ error: "Email already in use" });
 
-      // Create new user
+      if (user) {
+        if (user.isVerified) {
+          return res.status(400).json({
+            error: "User already registered and verified. Please login.",
+          });
+        }
+
+        // Resend OTP for unverified users
+        const otp = user.generateOTP();
+        await user.save();
+        await sendOTPEmail(email, otp);
+
+        return res.status(200).json({
+          message:
+            "User already exists but not verified. OTP resent to your email.",
+        });
+      }
+
+      // Create new user and send OTP
       user = new User({ name, email, password, phone, alternate_Phone });
+      const otp = user.generateOTP();
       await user.save();
-
-      // Generate JWT Token
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
+      await sendOTPEmail(email, otp);
 
       res.status(201).json({
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        },
+        message: "Account created. OTP sent to your email for verification.",
       });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   }
 );
-
 // ✅ Login user
 router.post(
   "/login",
@@ -80,6 +89,12 @@ router.post(
       const user = await User.findOne({ email });
       if (!user) return res.status(400).json({ error: "Invalid credentials" });
 
+      if (!user.isVerified)
+        return res.status(403).json({
+          error:
+            "Account not verified. Please verify using the OTP sent to your email.",
+        });
+
       const isMatch = await user.matchPassword(password);
       if (!isMatch)
         return res.status(400).json({ error: "Invalid credentials" });
@@ -88,7 +103,7 @@ router.post(
         expiresIn: "7d",
       });
 
-      res.status(201).json({
+      res.status(200).json({
         token,
         user: {
           id: user._id,
@@ -97,6 +112,39 @@ router.post(
           role: user.role,
         },
       });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+);
+// ✅ Verify OTP
+router.post(
+  "/verify-otp",
+  [
+    body("email").isEmail().withMessage("Invalid email"),
+    body("otp")
+      .isLength({ min: 6, max: 6 })
+      .withMessage("OTP must be 6 digits"),
+  ],
+  async (req, res) => {
+    const { email, otp } = req.body;
+    try {
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      if (user.isVerified)
+        return res.status(400).json({ message: "User already verified." });
+
+      if (user.verifyOTP(otp)) {
+        await user.save();
+        return res
+          .status(200)
+          .json({
+            message: "OTP verified successfully. Your account is now verified.",
+          });
+      } else {
+        return res.status(400).json({ error: "Invalid or expired OTP." });
+      }
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
