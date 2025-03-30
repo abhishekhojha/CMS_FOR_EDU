@@ -34,7 +34,7 @@ router.post(
 
     const { name, email, password, phone, alternatePhone } = req.body;
     const alternate_Phone = alternatePhone || null;
-
+    
     try {
       // Check if user already exists
       let user = await User.findOne({ email });
@@ -45,11 +45,11 @@ router.post(
             error: "User already registered and verified. Please login.",
           });
         }
-
         // Resend OTP for unverified users
         const otp = user.generateOTP();
         await user.save();
         await sendOTPEmail(email, otp);
+        console.log(user.isVerified);
 
         return res.status(200).json({
           message:
@@ -136,11 +136,9 @@ router.post(
 
       if (user.verifyOTP(otp)) {
         await user.save();
-        return res
-          .status(200)
-          .json({
-            message: "OTP verified successfully. Your account is now verified.",
-          });
+        return res.status(200).json({
+          message: "OTP verified successfully. Your account is now verified.",
+        });
       } else {
         return res.status(400).json({ error: "Invalid or expired OTP." });
       }
