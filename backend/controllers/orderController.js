@@ -11,8 +11,16 @@ const ExcelJS = require("exceljs");
 // Create Order
 const createOrder = async (req, res) => {
   try {
-    const { courseId, promoCode } = req.body;
+    const { courseId, promoCode, name, email, contact, alternateContact } =
+      req.body;
     const userId = req.user.id;
+
+    // Validate user details
+    if (!name || !email || !contact) {
+      return res
+        .status(400)
+        .json({ message: "Name, email, and contact are required" });
+    }
 
     // Fetch course details
     const course = await Course.findById(courseId);
@@ -28,12 +36,14 @@ const createOrder = async (req, res) => {
         isActive: true,
       });
 
-      if (!promo)
+      if (!promo) {
         return res
           .status(400)
           .json({ message: "Invalid or inactive promo code" });
-      if (new Date(promo.expiryDate) < new Date())
+      }
+      if (new Date(promo.expiryDate) < new Date()) {
         return res.status(400).json({ message: "Promo code expired" });
+      }
 
       const discount = (promo.discountPercentage / 100) * amount;
       const finalDiscount = promo.maxDiscount
@@ -56,6 +66,10 @@ const createOrder = async (req, res) => {
     // Save order to the database
     const newOrder = new Order({
       user: userId,
+      name,
+      email,
+      contact,
+      alternateContact: alternateContact || null,
       course: courseId,
       amount: amount / 100,
       discountedAmount: discountedAmount / 100,
@@ -68,7 +82,7 @@ const createOrder = async (req, res) => {
     res.status(200).json({
       success: true,
       orderId: order.id,
-      amount: discountedAmount,
+      amount: discountedAmount / 100,
     });
   } catch (err) {
     console.error(err);

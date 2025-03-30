@@ -7,6 +7,22 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    contact: {
+      type: String,
+      required: true,
+    },
+    alternateContact: {
+      type: String,
+      default: null,
+    },
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
