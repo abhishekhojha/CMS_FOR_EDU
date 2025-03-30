@@ -183,9 +183,19 @@ const getOrdersByCourseId = async (req, res) => {
       .json({ message: "Server Error", error: err.message });
   }
 };
+const exportOrdersByCourseId = async (req, res) => {
+  try {
+    const orders = await Order.find({ course: courseId, status: "paid" })
+      .populate("user", "name email")
+      .populate("course", "title price")
+      .sort({ createdAt: -1 })
+      .limit(limit);
+  } catch (error) {}
+};
 module.exports = {
   createOrder,
   verifyPayment,
   getAllOrders,
   getOrdersByCourseId,
+  exportOrdersByCourseId,
 };
