@@ -34,7 +34,7 @@ router.post(
 
     const { name, email, password, phone, alternatePhone } = req.body;
     const alternate_Phone = alternatePhone || null;
-    
+
     try {
       // Check if user already exists
       let user = await User.findOne({ email });
@@ -196,6 +196,49 @@ router.get("/all", hasRole, async (req, res) => {
     console.log(error);
 
     return res.status(500).json({ err: error });
+  }
+});
+
+// ✅ Send OTP
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // Generate and save OTP
+    const otp = user.generateOTP();
+    await user.save();
+    sendOTPEmail(user.email, otp);
+    res.status(200).json({ message: "OTP sent to your email" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+router.post("/reset-password", async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // Validate OTP
+    if (!user.verifyOTP(otp)) {
+      return res.status(400).json({ error: "Invalid or expired OTP" });
+    }
+
+    // Update Password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+
+    // Clear OTP fields
+    user.otp = undefined;
+    user.otpExpires = undefined;
+
+    await user.save();
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 module.exports = router;
