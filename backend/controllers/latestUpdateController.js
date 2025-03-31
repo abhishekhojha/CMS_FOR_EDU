@@ -4,7 +4,6 @@ const LatestUpdate = require("../models/latestUpdate");
 exports.createUpdate = async (req, res) => {
   try {
     const { title, description, imageUrl, link, isLive, category } = req.body;
-
     const newUpdate = new LatestUpdate({
       title,
       description,

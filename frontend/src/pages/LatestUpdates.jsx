@@ -38,7 +38,7 @@ const LatestUpdates = () => {
     description: "",
     imageUrl: "https://placehold.co/600x400",
     link: "",
-    isActive: true,
+    isLive: true,
     category: "News", // Default category
   });
 
@@ -166,11 +166,11 @@ const LatestUpdates = () => {
               <Label>
                 <input
                   type="checkbox"
-                  name="isActive"
-                  checked={formData.isActive}
+                  name="isLive"
+                  checked={formData.isLive}
                   onChange={handleChange}
                 />{" "}
-                Is Active
+                Is Live
               </Label>
             </div>
             <Button type="submit">Create Update</Button>
