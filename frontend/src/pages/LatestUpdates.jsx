@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "react-toastify";
 import {
   Dialog,
@@ -16,29 +23,31 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import Loader from "@/components/ui/Loader";
 
 const LatestUpdates = () => {
   const [updates, setUpdates] = useState([]);
-  const [isOpen, setIsOpen] = useState(false); // Modal State
-  const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [categories] = useState([
+    "Announcement",
+    "Counselling",
+    "Courses",
+    "Others",
+  ]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     imageUrl: "https://placehold.co/600x400",
     link: "",
     isActive: true,
+    category: "News", // Default category
   });
 
   // ✅ Fetch Updates
   const fetchUpdates = async () => {
     try {
-      setLoading(true);
       const data = await getAllUpdates();
       setUpdates(data);
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       toast.error("Failed to fetch updates.");
     }
   };
@@ -54,6 +63,11 @@ const LatestUpdates = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  // ✅ Handle Category Change
+  const handleCategoryChange = (value) => {
+    setFormData((prev) => ({ ...prev, category: value }));
   };
 
   // ✅ Handle Create Update
@@ -80,9 +94,7 @@ const LatestUpdates = () => {
       toast.error("Failed to delete update.");
     }
   };
-  if (loading) {
-    return <Loader />;
-  }
+
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6">Latest Updates</h1>
@@ -133,6 +145,24 @@ const LatestUpdates = () => {
               />
             </div>
             <div>
+              <Label>Category</Label>
+              <Select
+                value={formData.category}
+                onValueChange={handleCategoryChange}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((cat, index) => (
+                    <SelectItem key={index} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
               <Label>
                 <input
                   type="checkbox"
@@ -158,6 +188,7 @@ const LatestUpdates = () => {
             <div key={update._id} className="p-4 border rounded-lg">
               <h3 className="text-xl font-bold">{update.title}</h3>
               <p>{update.description}</p>
+              <p>Category: {update.category}</p>
               {update.imageUrl && (
                 <img
                   src={update.imageUrl}
