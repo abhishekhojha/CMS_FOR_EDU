@@ -20,6 +20,7 @@ import {
 const LatestUpdates = () => {
   const [updates, setUpdates] = useState([]);
   const [isOpen, setIsOpen] = useState(false); // Modal State
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -31,9 +32,12 @@ const LatestUpdates = () => {
   // ✅ Fetch Updates
   const fetchUpdates = async () => {
     try {
+      setLoading(true);
       const data = await getAllUpdates();
       setUpdates(data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast.error("Failed to fetch updates.");
     }
   };
