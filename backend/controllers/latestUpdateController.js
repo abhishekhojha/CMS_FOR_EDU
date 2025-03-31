@@ -3,14 +3,15 @@ const LatestUpdate = require("../models/latestUpdate");
 // ✅ Create Latest Update
 exports.createUpdate = async (req, res) => {
   try {
-    const { title, description, imageUrl, link, isActive } = req.body;
+    const { title, description, imageUrl, link, isLive, category } = req.body;
 
     const newUpdate = new LatestUpdate({
       title,
       description,
       imageUrl,
       link,
-      isActive,
+      isLive,
+      category,
     });
 
     await newUpdate.save();
@@ -20,10 +21,13 @@ exports.createUpdate = async (req, res) => {
   }
 };
 
-// ✅ Get All Updates
+// ✅ Get All Updates (Optional Filtering by Category)
 exports.getAllUpdates = async (req, res) => {
   try {
-    const updates = await LatestUpdate.find().sort({ createdAt: -1 });
+    const { category } = req.query;
+    const filter = category ? { category } : {};
+
+    const updates = await LatestUpdate.find(filter).sort({ createdAt: -1 });
     res.status(200).json(updates);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -44,15 +48,16 @@ exports.getUpdateById = async (req, res) => {
 // ✅ Update Latest Update
 exports.updateUpdate = async (req, res) => {
   try {
+    const { title, description, imageUrl, link, isLive, category } = req.body;
+
     const update = await LatestUpdate.findByIdAndUpdate(
       req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
+      { title, description, imageUrl, link, isLive, category },
+      { new: true, runValidators: true }
     );
+
     if (!update) return res.status(404).json({ error: "Update not found" });
+
     res.status(200).json({ message: "Update updated successfully", update });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -64,6 +69,7 @@ exports.deleteUpdate = async (req, res) => {
   try {
     const update = await LatestUpdate.findByIdAndDelete(req.params.id);
     if (!update) return res.status(404).json({ error: "Update not found" });
+
     res.status(200).json({ message: "Update deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });

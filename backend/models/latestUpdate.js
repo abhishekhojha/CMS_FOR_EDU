@@ -1,30 +1,26 @@
 const mongoose = require("mongoose");
 
-const latestUpdateSchema = new mongoose.Schema(
+const updateSchema = new mongoose.Schema(
   {
-    title: {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    imageUrl: { type: String, required: true },
+    category: {
       type: String,
       required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    imageUrl: {
-      type: String,
-      default: null,
+      enum: ["Announcement", "Counselling", "Courses", "Others"],
     },
     link: {
       type: String,
       default: null,
+      validate: {
+        validator: (v) => !v || /^https?:\/\/.+\..+/.test(v),
+        message: "Invalid URL format",
+      },
     },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+    isLive: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("LatestUpdate", latestUpdateSchema);
+module.exports = mongoose.model("Update", updateSchema);
