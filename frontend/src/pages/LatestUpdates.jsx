@@ -39,14 +39,23 @@ const LatestUpdates = () => {
     imageUrl: "https://placehold.co/600x400",
     link: "",
     isLive: true,
-    category: "News", // Default category
+    category: "Announcement", // Default category
   });
 
-  // ✅ Fetch Updates
-  const fetchUpdates = async () => {
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // ✅ Fetch Updates with Pagination
+  const fetchUpdates = async (page = 1) => {
     try {
-      const data = await getAllUpdates();
-      setUpdates(data);
+      const query = `?page=${page}&limit=6${
+        selectedCategory ? `&category=${selectedCategory}` : ""
+      }`;
+      const response = await getAllUpdates(query);
+      setUpdates(response.data);
+      setTotalPages(response.totalPages);
+      setCurrentPage(response.currentPage);
     } catch (error) {
       toast.error("Failed to fetch updates.");
     }
@@ -54,7 +63,7 @@ const LatestUpdates = () => {
 
   useEffect(() => {
     fetchUpdates();
-  }, []);
+  }, [selectedCategory]);
 
   // ✅ Handle Input Change
   const handleChange = (e) => {
@@ -98,9 +107,6 @@ const LatestUpdates = () => {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6">Latest Updates</h1>
-
-      {/* ✅ Button to Open Modal */}
-      <Button onClick={() => setIsOpen(true)}>Create New Update</Button>
 
       {/* ✅ ShadCN Dialog (Modal) */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -146,14 +152,12 @@ const LatestUpdates = () => {
             </div>
             <div>
               <Label>Category</Label>
-              <Select
-                value={formData.category}
-                onValueChange={handleCategoryChange}
-              >
+              <Select value={"All"} onValueChange={handleCategoryChange}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select Category" />
+                  <SelectValue placeholder="Filter by Category" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="All">All Categories</SelectItem>
                   {categories.map((cat, index) => (
                     <SelectItem key={index} value={cat}>
                       {cat}
@@ -180,11 +184,11 @@ const LatestUpdates = () => {
 
       {/* ✅ List Updates */}
       <h2 className="text-2xl font-bold mt-8 mb-4">All Updates</h2>
-      {updates.length === 0 ? (
+      {updates?.length === 0 ? (
         <p>No updates available</p>
       ) : (
-        <div className="space-y-4 grid gap-2 md:grid-cols-3">
-          {updates.map((update) => (
+        <div className="grid gap-2 md:grid-cols-3">
+          {updates?.map((update) => (
             <div key={update._id} className="p-4 border rounded-lg">
               <h3 className="text-xl font-bold">{update.title}</h3>
               <p>{update.description}</p>
@@ -218,6 +222,25 @@ const LatestUpdates = () => {
           ))}
         </div>
       )}
+
+      {/* ✅ Pagination Controls */}
+      <div className="mt-8 flex justify-center items-center space-x-4">
+        <Button
+          onClick={() => fetchUpdates(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <Button
+          onClick={() => fetchUpdates(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 };

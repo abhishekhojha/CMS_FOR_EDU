@@ -23,11 +23,31 @@ exports.createUpdate = async (req, res) => {
 // ✅ Get All Updates (Optional Filtering by Category)
 exports.getAllUpdates = async (req, res) => {
   try {
-    const { category } = req.query;
+    const { category, page = 1, limit = 10 } = req.query;
+
+    // Create filter for category if provided
     const filter = category ? { category } : {};
 
-    const updates = await LatestUpdate.find(filter).sort({ createdAt: -1 });
-    res.status(200).json(updates);
+    // Convert page and limit to numbers
+    const pageNumber = parseInt(page);
+    const limitNumber = parseInt(limit);
+
+    // Fetch updates with pagination
+    const updates = await LatestUpdate.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((pageNumber - 1) * limitNumber)
+      .limit(limitNumber);
+
+    // Get total count for pagination info
+    const totalUpdates = await LatestUpdate.countDocuments(filter);
+
+    res.status(200).json({
+      success: true,
+      data: updates,
+      currentPage: pageNumber,
+      totalPages: Math.ceil(totalUpdates / limitNumber),
+      totalUpdates,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

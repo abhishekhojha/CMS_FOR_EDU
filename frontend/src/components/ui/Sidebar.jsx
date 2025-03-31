@@ -16,6 +16,7 @@ import {
   CirclePercent,
   File,
   Contact,
+  CalendarPlus,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/redux/authSlice";
@@ -37,7 +38,11 @@ function Sidebar() {
     { path: "/users", icon: <User size={20} />, label: "Users" },
     { path: "/files", icon: <File size={20} />, label: "Files" },
     { path: "/contacts", icon: <Contact size={20} />, label: "Contacts" },
-
+    {
+      path: "/latest-updates",
+      icon: <CalendarPlus size={20} />,
+      label: "Latest Updates",
+    },
     {
       path: "/promo-codes",
       icon: <CirclePercent size={20} />,
