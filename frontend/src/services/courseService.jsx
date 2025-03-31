@@ -22,7 +22,7 @@ export const createCourse = async (data) => {
 
 // Get All Courses
 export const getCourses = async () => {
-  return await axios.get(API_URL_PATH);
+  return await axios.get(API_URL_PATH+"/all");
 };
 
 // Get Course by ID
