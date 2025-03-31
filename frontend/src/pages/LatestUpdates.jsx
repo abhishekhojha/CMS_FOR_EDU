@@ -183,7 +183,7 @@ const LatestUpdates = () => {
       {updates.length === 0 ? (
         <p>No updates available</p>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 grid gap-2 md:grid-cols-3">
           {updates.map((update) => (
             <div key={update._id} className="p-4 border rounded-lg">
               <h3 className="text-xl font-bold">{update.title}</h3>
@@ -206,7 +206,7 @@ const LatestUpdates = () => {
                   Visit Link
                 </a>
               )}
-              <p>Status: {update.isActive ? "Active" : "Inactive"}</p>
+              <p>Status: {update.isLive ? "Active" : "Inactive"}</p>
               <Button
                 variant="destructive"
                 onClick={() => handleDelete(update._id)}

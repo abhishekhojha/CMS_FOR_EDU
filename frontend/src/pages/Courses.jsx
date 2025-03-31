@@ -66,7 +66,7 @@ const CourseList = ({ onEdit }) => {
                   {course.description}
                 </p>
                 <p className="text-blue-600 font-bold mt-2">₹{course.price}</p>
-                <div className="flex gap-4 mt-4">
+                <div className="flex gap-2 mt-4">
                   <Button variant="outline">
                     <Link to={"/edit-course/" + course._id}>Edit</Link>
                   </Button>

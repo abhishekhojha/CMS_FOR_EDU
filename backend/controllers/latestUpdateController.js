@@ -7,10 +7,10 @@ exports.createUpdate = async (req, res) => {
     const newUpdate = new LatestUpdate({
       title,
       description,
+      category,
       imageUrl,
       link,
       isLive,
-      category,
     });
 
     await newUpdate.save();
