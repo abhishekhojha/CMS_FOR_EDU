@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import Loader from "@/components/ui/Loader";
 
 const LatestUpdates = () => {
   const [updates, setUpdates] = useState([]);
@@ -79,7 +80,9 @@ const LatestUpdates = () => {
       toast.error("Failed to delete update.");
     }
   };
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6">Latest Updates</h1>
