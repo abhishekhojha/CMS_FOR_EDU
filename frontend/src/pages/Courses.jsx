@@ -105,7 +105,7 @@ const CourseList = ({ onEdit }) => {
                   <Button
                     variant="outline"
                     onClick={() =>
-                      unPublishCourse(course._id,course.unPublish ? true : false)
+                      unPublishCourse(course._id,!course.unPublish ? true : false)
                     }
                   >
                     {!course.unPublish ? "Unpublish" : "Publish"}
