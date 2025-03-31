@@ -39,3 +39,6 @@ export const updateCourse = async (id, data) => {
 export const deleteCourse = async (id) => {
   return await axios.delete(`${API_URL_PATH}/${id}`);
 };
+export const unpublishCourseById = async (id,status) => {
+  return await axios.patch(`${API_URL_PATH}/${id}/${status}/unpublish`);
+};

@@ -4,7 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { getCourses, deleteCourse } from "@/services/courseService";
+import {
+  getCourses,
+  deleteCourse,
+  unpublishCourseById,
+} from "@/services/courseService";
 import Loader from "@/components/ui/Loader";
 
 const CourseList = ({ onEdit }) => {
@@ -35,6 +39,23 @@ const CourseList = ({ onEdit }) => {
       fetchCourses();
     } catch (error) {
       toast.error(error.response?.data?.error || "Error deleting course");
+    }
+  };
+  const unPublishCourse = async (id, status) => {
+    let CourseUnpublish = confirm("Do you want to change course status");
+    if (!CourseUnpublish) return false;
+    try {
+      // await axios.delete(`http://localhost:5000/api/courses/${id}`);
+      await unpublishCourseById(id, status);
+      if (status) {
+        toast.success("Course Unpublished successfully");
+      } else {
+        toast.success("Course Published successfully");
+      }
+
+      fetchCourses();
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Error changing status");
     }
   };
   if (loading) {
@@ -76,8 +97,18 @@ const CourseList = ({ onEdit }) => {
                   >
                     Delete
                   </Button>
+                </div>
+                <div className="flex gap-2 mt-4">
                   <Button variant="outline">
                     <Link to={"/orderCourse/" + course._id}>View Students</Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      unPublishCourse(course._id,course.unPublish ? true : false)
+                    }
+                  >
+                    {!course.unPublish ? "Unpublish" : "Publish"}
                   </Button>
                 </div>
               </CardContent>

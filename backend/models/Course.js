@@ -7,6 +7,7 @@ const courseSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     imageUrl: { type: String, default: "" }, // Optional: For Cloudinary image URL
     imagePublicId: { type: String, default: "" }, // For image deletion
+    unPublish: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
