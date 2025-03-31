@@ -14,6 +14,7 @@ const paymentRoutes = require("./routes/orderRoute");
 const promoCodeRoutes = require("./routes/promoCodeRoutes")
 const notificationRoutes = require("./routes/notificationRoutes")
 const contactRoutes = require('./routes/contactRoutes');
+const latestUpdate = require("./routes/latestUpdateRoutes")
 // ✅ Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Parse JSON request body
@@ -39,6 +40,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/promocodes", promoCodeRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/contacts", contactRoutes);
+app.use("/api/latest-update", latestUpdate);
 
 
 // ✅ Default Route
