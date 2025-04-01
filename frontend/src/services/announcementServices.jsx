@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_URL } from "@/config";
 
-const API_URL_PATH = API_URL + "/announcements";
+const API_URL_PATH = API_URL + "/announcement";
 
 // Configure Axios interceptor for token
 axios.interceptors.request.use(
