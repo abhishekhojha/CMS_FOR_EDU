@@ -96,6 +96,8 @@ import FileManager from "@/pages/FileManager";
 import OrderByCourseList from "@/pages/OrderByCourse";
 import ContactList from "@/pages/Contact";
 import LatestUpdates from "@/pages/LatestUpdates";
+import AnnouncementsList from "@/pages/AnnouncementList";
+import AnnouncementForm from "@/pages/AnnouncementForm";
 
 function AppRoutes() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -167,6 +169,22 @@ function AppRoutes() {
           }
         />
         <Route
+          path="/announcements"
+          element={
+            <ProtectedRoute>
+              <AnnouncementsList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-announcements"
+          element={
+            <ProtectedRoute>
+              <AnnouncementForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/files"
           element={
             <ProtectedRoute>
@@ -190,7 +208,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/orderCourse/:courseId"
           element={
@@ -199,7 +217,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/orders"
           element={
