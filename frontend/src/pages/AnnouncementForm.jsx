@@ -132,7 +132,7 @@ export default function AnnouncementForm() {
         </div>
       )}
 
-      <Button type="submit">Create Announcement</Button>
+      <Button type="submit" className="ml-2">Create Announcement</Button>
     </form>
   );
 }
