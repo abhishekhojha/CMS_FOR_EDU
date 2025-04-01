@@ -255,10 +255,28 @@ const exportOrdersByCourseId = async (req, res) => {
     return res.status(500).json({ error });
   }
 };
+const getOrderByRazorpayOrderId = async (req, res) => {
+  try {
+    const { razorpayOrderId } = req.params;
+
+    const order = await Order.findOne({ razorpayOrderId });
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createOrder,
   verifyPayment,
   getAllOrders,
   getOrdersByCourseId,
   exportOrdersByCourseId,
+  getOrderByRazorpayOrderId,
 };

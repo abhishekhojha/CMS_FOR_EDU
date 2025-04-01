@@ -5,7 +5,8 @@ const {
   verifyPayment,
   getAllOrders,
   getOrdersByCourseId,
-  exportOrdersByCourseId
+  exportOrdersByCourseId,
+  getOrderByRazorpayOrderId
 } = require("../controllers/orderController");
 const hasRole = require("../middleware/Auth");
 
@@ -38,6 +39,6 @@ router.get("/purchased-courses",protect ,async (req, res) => {
 });
 router.get("/filter/:courseId", hasRole, getOrdersByCourseId);
 router.get("/export/:courseId", hasRole, exportOrdersByCourseId);
-
+router.get("/order/:razorpayOrderId", getOrderByRazorpayOrderId);
 
 module.exports = router;
