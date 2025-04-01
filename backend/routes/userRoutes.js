@@ -209,9 +209,13 @@ router.post("/forgot-password", async (req, res) => {
     // Generate and save OTP
     const otp = user.generateOTP();
     await user.save();
+    
     sendOTPEmail(user.email, otp);
+    
     res.status(200).json({ message: "OTP sent to your email" });
   } catch (error) {
+    console.log(error);
+    
     res.status(500).json({ error: error.message });
   }
 });
