@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { createAnnouncement } from "@/services/announcementService";
+import { createAnnouncement } from "@/services/announcementServices";
 import { getCourses } from "@/services/courseService";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
