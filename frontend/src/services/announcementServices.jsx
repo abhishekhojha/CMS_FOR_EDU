@@ -17,7 +17,6 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 // Create Announcement
 export const createAnnouncement = async (data) => {
   return await axios.post(API_URL_PATH, data);
