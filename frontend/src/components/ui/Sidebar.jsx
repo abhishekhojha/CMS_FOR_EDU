@@ -17,6 +17,7 @@ import {
   File,
   Contact,
   CalendarPlus,
+  Speech,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/redux/authSlice";
@@ -52,6 +53,11 @@ function Sidebar() {
       path: "/notifications",
       icon: <Bell size={20} />,
       label: "Notifications",
+    },
+    {
+      path: "/announcements",
+      icon: <Speech size={20} />,
+      label: "Announcements",
     },
   ];
 
