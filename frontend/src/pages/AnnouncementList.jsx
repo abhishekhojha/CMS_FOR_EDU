@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   getAllAnnouncements,
   deleteAnnouncement,
-} from "@/services/announcementService";
+} from "@/services/announcementServices";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
