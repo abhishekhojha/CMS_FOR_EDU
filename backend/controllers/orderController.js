@@ -259,7 +259,7 @@ const getOrderByRazorpayOrderId = async (req, res) => {
   try {
     const { razorpayOrderId } = req.params;
 
-    const order = await Order.findOne({ razorpayOrderId });
+    const order = await Order.findOne({ razorpayOrderId }).populate("course");
 
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
