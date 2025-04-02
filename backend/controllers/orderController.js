@@ -201,7 +201,6 @@ const exportOrdersByCourseId = async (req, res) => {
   try {
     const { courseId } = req.params;
     let { limit } = req.query;
-
     limit = parseInt(limit) || 50;
 
     const orders = await Order.find({
@@ -212,8 +211,11 @@ const exportOrdersByCourseId = async (req, res) => {
       .populate("course", "title price")
       .sort({ createdAt: -1 })
       .limit(limit);
+
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Sheet1");
+    const worksheet = workbook.addWorksheet("Orders");
+
+    // Define headers
     const headers = [
       "User Name",
       "User Email",
@@ -224,13 +226,15 @@ const exportOrdersByCourseId = async (req, res) => {
       "Payment Date",
       "Order Created At",
     ];
-    worksheet.addRow(headers);
+    worksheet.addRow(headers).font = { bold: true };
+
     // Add data rows
     orders.forEach((order) => {
       worksheet.addRow([
-        order?.name || "N/A",
-        order?.email || "N/A",
-        order?.contact || "N/A",
+        order?.user?.name || "N/A",
+        order?.user?.email || "N/A",
+        order?.user?.contact || "N/A",
+        order?.user?.alternateContact || "N/A",
         order.course?.title || "N/A",
         order.course?.price || "N/A",
         order.status,
@@ -238,21 +242,22 @@ const exportOrdersByCourseId = async (req, res) => {
         order.createdAt.toLocaleString(),
       ]);
     });
-    worksheet.getRow(1).font = { bold: true };
-    await workbook.xlsx.writeFile("orders.xlsx");
 
+    // Generate Excel file in memory
+    const buffer = await workbook.xlsx.writeBuffer();
+
+    // Set response headers
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
     res.setHeader("Content-Disposition", "attachment; filename=orders.xlsx");
 
-    await workbook.xlsx.write(res);
-    res.end();
+    // Send the buffer as response
+    res.send(Buffer.from(buffer));
   } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({ error });
+    console.error("Export error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 const getOrderByRazorpayOrderId = async (req, res) => {
