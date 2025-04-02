@@ -220,6 +220,7 @@ const exportOrdersByCourseId = async (req, res) => {
       "User Name",
       "User Email",
       "User Phone",
+      "User Alternate Phone",
       "Course Title",
       "Course Price",
       "Payment Status",
@@ -231,10 +232,10 @@ const exportOrdersByCourseId = async (req, res) => {
     // Add data rows
     orders.forEach((order) => {
       worksheet.addRow([
-        order?.user?.name || "N/A",
-        order?.user?.email || "N/A",
-        order?.user?.contact || "N/A",
-        order?.user?.alternateContact || "N/A",
+        order?.name || "N/A",
+        order?.email || "N/A",
+        order?.contact || "N/A",
+        order?.alternateContact || "N/A",
         order.course?.title || "N/A",
         order.course?.price || "N/A",
         order.status,
