@@ -22,6 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 
 const LatestUpdates = () => {
@@ -109,7 +110,10 @@ const LatestUpdates = () => {
       <h1 className="text-3xl font-bold mb-6">Latest Updates</h1>
 
       {/* ✅ ShadCN Dialog (Modal) */}
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline">Create Latest Update</Button>
+        </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Create Latest Update</DialogTitle>
