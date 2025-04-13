@@ -58,6 +58,19 @@ const CourseList = ({ onEdit }) => {
       toast.error(error.response?.data?.error || "Error changing status");
     }
   };
+  function truncateText(htmlContent, maxLength) {
+    // Create a temporary div element to extract plain text from HTML
+    const div = document.createElement("div");
+    div.innerHTML = htmlContent;
+    let textContent = div.textContent || div.innerText || "";
+
+    // Truncate the text content if it's too long
+    if (textContent.length > maxLength) {
+      textContent = textContent.slice(0, maxLength) + "...";
+    }
+
+    return textContent;
+  }
   if (loading) {
     return <Loader />;
   }
@@ -84,7 +97,7 @@ const CourseList = ({ onEdit }) => {
               <CardContent>
                 <h3 className="text-xl font-semibold">{course.title}</h3>
                 <p className="text-gray-600 line-clamp-3">
-                  {course.description}
+                  {truncateText(course.description,100)}
                 </p>
                 <p className="text-blue-600 font-bold mt-2">₹{course.price}</p>
                 <div className="flex gap-2 mt-4">
@@ -105,7 +118,10 @@ const CourseList = ({ onEdit }) => {
                   <Button
                     variant="outline"
                     onClick={() =>
-                      unPublishCourse(course._id,!course.unPublish ? true : false)
+                      unPublishCourse(
+                        course._id,
+                        !course.unPublish ? true : false
+                      )
                     }
                   >
                     {!course.unPublish ? "Unpublish" : "Publish"}
