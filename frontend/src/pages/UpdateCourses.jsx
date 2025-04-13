@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-toastify";
 import { updateCourse, getCourseById } from "@/services/courseService";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
 export default function UpdateCourses() {
   const { id } = useParams();
   const [courseData, setCourseData] = useState({
@@ -33,9 +35,11 @@ export default function UpdateCourses() {
       toast.error(error.response?.data?.error || "Error getting course");
     }
   }
+
   useEffect(() => {
     fetchCourse();
-  }, []);
+  }, [id]);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image") {
@@ -50,7 +54,7 @@ export default function UpdateCourses() {
 
     const formData = new FormData();
     formData.append("title", courseData.title);
-    formData.append("description", courseData.description);
+    formData.append("description", courseData.description); // Use Tiptap content here
     formData.append("price", courseData.price);
     if (courseData.image) {
       formData.append("image", courseData.image);
@@ -59,10 +63,6 @@ export default function UpdateCourses() {
     try {
       setLoading(true);
       const response = await updateCourse(id, formData);
-      //   const response = await axios.post(
-      //     "http://localhost:4000/api/courses",
-      //     formData
-      //   );
       toast.success("Course updated successfully!");
       setLoading(false);
     } catch (error) {
@@ -70,6 +70,23 @@ export default function UpdateCourses() {
       toast.error(error.response?.data?.error || "Error updating course");
     }
   };
+
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: courseData.description,
+    onUpdate({ editor }) {
+      setCourseData((prevData) => ({
+        ...prevData,
+        description: editor.getHTML(), // Get HTML content from the editor
+      }));
+    },
+  });
+
+  useEffect(() => {
+    if (courseData.description && editor) {
+      editor.commands.setContent(courseData.description);
+    }
+  }, [courseData.description, editor]);
 
   return (
     <div>
@@ -95,14 +112,9 @@ export default function UpdateCourses() {
         <Label className="my-2" htmlFor="description">
           Description
         </Label>
-        <Textarea
-          name="description"
-          id="description"
-          placeholder="Enter course description"
-          value={courseData.description}
-          onChange={handleChange}
-          required
-        />
+        <div className="prose border p-2 rounded-md">
+          {editor && <EditorContent editor={editor} />}
+        </div>
 
         <Label className="my-2" htmlFor="price">
           Price (INR)

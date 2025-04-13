@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-toastify";
 import { createCourse } from "@/services/courseService";
+import TiptapEditor from "@/components/TiptapEditor"; // 👈 import
+
 const CreateCourseForm = () => {
   const [courseData, setCourseData] = useState({
     title: "",
@@ -15,6 +15,7 @@ const CreateCourseForm = () => {
     image: null,
   });
   const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image") {
@@ -22,6 +23,10 @@ const CreateCourseForm = () => {
     } else {
       setCourseData((prev) => ({ ...prev, [name]: value }));
     }
+  };
+
+  const handleDescriptionChange = (value) => {
+    setCourseData((prev) => ({ ...prev, description: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -36,16 +41,12 @@ const CreateCourseForm = () => {
 
     try {
       setLoading(true);
-      const response = await createCourse(formData);
-      // const response = await axios.post(
-      //   "http://localhost:4000/api/courses",
-      //   formData
-      // );
+      await createCourse(formData);
       toast.success("Course created successfully!");
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       toast.error(error.response?.data?.error || "Error creating course");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,13 +73,9 @@ const CreateCourseForm = () => {
       <Label className="my-2" htmlFor="description">
         Description
       </Label>
-      <Textarea
-        name="description"
-        id="description"
-        placeholder="Enter course description"
+      <TiptapEditor
         value={courseData.description}
-        onChange={handleChange}
-        required
+        onChange={handleDescriptionChange}
       />
 
       <Label className="my-2" htmlFor="price">
@@ -105,9 +102,10 @@ const CreateCourseForm = () => {
         onChange={handleChange}
         required
       />
+
       {loading ? (
         <Button disabled className="mt-6 w-full">
-          <Loader2 className="animate-spin" />
+          <Loader2 className="animate-spin mr-2" />
           Please wait
         </Button>
       ) : (
