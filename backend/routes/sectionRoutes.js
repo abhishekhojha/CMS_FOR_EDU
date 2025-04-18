@@ -9,6 +9,7 @@ const hasRole = require("../middleware/Auth");
 // ✅ Create or Update multiple sections for a page
 router.post(
   "/",
+  hasRole,
   [
     body("pageId").notEmpty().withMessage("Page ID is required"),
     body("sections").isArray().withMessage("Sections must be an array"),
